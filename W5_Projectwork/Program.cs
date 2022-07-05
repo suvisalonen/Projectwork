@@ -103,14 +103,39 @@ namespace W5_Projectwork
                 return events;
                
             }
-
+            //Ilari
             public static void askADate()
             {
                 //kysy päivämäärää tai printtaa päivän mukaan
                 //
-
                 Console.WriteLine("Syötä haluamasi päivämäärä: ");
-                string userInput = Console.ReadLine();
+
+
+                bool succes = false;
+                while (succes == false)
+                {
+                    string userInput = Console.ReadLine();
+                    succes = DateTime.TryParse(userInput, out DateTime input);
+                    if (succes)
+                    {
+                        //käydään lista läpi ja haetaan päivämäärän mukaiset tapahtumat uuteen listaan
+
+                        List<string> FilteredList = new List<string>();
+
+                        foreach (var item in collection) //collection= list muuttuja joka tulee choose a tag metodista
+                        {
+                            if (item.startingDay > input > item.endingDay)
+                                FilteredList.Add(item);
+                        }
+
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("try again");
+                    }
+                }
+
 
 
             }
