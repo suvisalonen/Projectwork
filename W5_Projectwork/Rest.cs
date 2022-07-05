@@ -9,12 +9,12 @@ namespace W5_Projectwork
     {
         
 
-        public static async Task<HelsinkiEvent> HelsinkiApiRestClient ()
+        public static async Task<List<HelsinkiEvent>> HelsinkiApiRestClient ()
         {
             string eventsUrl = "http://open-api.myhelsinki.fi/";
             string urlParams = "v1/event/helsinki%3Aaga42pzzvi";
 
-            return await ApiHelper.RunAsync<HelsinkiEvent>(eventsUrl, urlParams);
+            return await ApiHelper.RunAsync<List<HelsinkiEvent>>(eventsUrl, urlParams);
         }
         //public Place HelsinkiApiRestClient (string baseUrl, List<string> tagList)
         //{

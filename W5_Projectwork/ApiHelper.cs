@@ -46,5 +46,33 @@ namespace W5_Projectwork
                 return default(T);
             }
         }
+
+        public static async Task<string> GetJSONAsync<T>(string url, string urlParams)
+        {
+
+            try
+            {
+                using (var client = GetHttpClient(url))
+                {
+                    // send GET request
+                    HttpResponseMessage response = await client.GetAsync(urlParams);
+
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        var json = await response.Content.ReadAsStringAsync();
+                        return json;
+                    }
+
+                    return default(string);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return default(string);
+            }
+        }
+
+
     }
 }

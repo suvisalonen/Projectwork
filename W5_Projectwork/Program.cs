@@ -13,12 +13,16 @@ namespace W5_Projectwork
             Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
 
             //Input.menuSelectionLogic();
-            Console.WriteLine();
+            //Console.WriteLine();
+            //
+            //
+            //HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
+            //
+            //Console.WriteLine(response.name.fi);
 
-
-            HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
-
-            Console.WriteLine(response.name.fi);
+            Dictionary<string,double> coordinates = await GeoCoordinatesUtil.GetGeoCoordinatesAsync("00250");
+            Console.WriteLine(coordinates["lat"]);
+            Console.WriteLine(coordinates["lon"]);
         }
 
 
