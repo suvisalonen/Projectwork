@@ -13,12 +13,13 @@ namespace W5_Projectwork
             Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
 
             //Input.menuSelectionLogic();
+            
             Console.WriteLine();
 
 
-            HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
+           //HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
 
-            Console.WriteLine(response.name.fi);
+            //Console.WriteLine(response.name.fi);
         }
 
 
@@ -62,7 +63,7 @@ namespace W5_Projectwork
 
                             if (EventTags.ContainsKey(tagInput))
                             {
-                                chooseATag(tagInput, EventTags);
+                                SearchwithTag(tagInput, EventTags);
                                 a = false;
 
                             }
@@ -84,42 +85,18 @@ namespace W5_Projectwork
 
             }
 
-            public static void chooseATag(string tag, Dictionary<string, string> tagDictionary)
+            //Suvin tekemä metodi
+            public static void SearchwithTag(string tag, Dictionary<string, string> tagDictionary) 
             {
 
-                //tagDictionary[tag];
-                
+                var urlParams = tagDictionary[tag];
 
-                bool i = true;
-                while (i)
-                {
-                    string input = Console.ReadLine();
+                var events= await Rest.HelsinkiApiRestClient(urlParams);
+                //hakumetodi 
 
-                    if (input == "1")
-                    {
-
-                        //1
-                        i = false;
-                    }
-
-                    else if (input == "2")
-                    {
-                        //2
-                        i = false;
-                    }
-                    else if (input == "3")
-                    {
-                        //3
-                        i = false;
-                    }
-                    else
-                    {
-                        Console.WriteLine("ERROR!");
-                    }
-                }
+                //hakutulosten tallennus listaan?
 
 
-                
             }
 
             public static void askADate()
