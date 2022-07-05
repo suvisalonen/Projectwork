@@ -11,10 +11,14 @@ namespace W5_Projectwork
             Console.WriteLine("Tervetuloa tapahtumahakuun");
 
             Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
+            Dictionary<string, string> EventTags = new Dictionary<string, string>();
+            EventTags.Add("1", "v1/events/?tags_search=Musiikki");
+            EventTags.Add("2", "v1/events/?tags_filter=Nuorille");
+            EventTags.Add("3", "v1/events/?tags_filter=shows");
+            var events = await Input.SearchWithTag("1", EventTags);
 
-            //Input.menuSelectionLogic();
-            
-            Console.WriteLine();
+
+            Console.WriteLine(events);
 
 
            //HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
@@ -63,7 +67,7 @@ namespace W5_Projectwork
 
                             if (EventTags.ContainsKey(tagInput))
                             {
-                                SearchwithTag(tagInput, EventTags);
+                                SearchWithTag(tagInput, EventTags);
                                 a = false;
 
                             }
@@ -86,7 +90,7 @@ namespace W5_Projectwork
             }
 
             //Suvin tekemä metodi
-            public static void SearchwithTag(string tag, Dictionary<string, string> tagDictionary) 
+            public static async Task<List<HelsinkiEvent>> SearchWithTag(string tag, Dictionary<string, string> tagDictionary) 
             {
 
                 var urlParams = tagDictionary[tag];
@@ -96,7 +100,8 @@ namespace W5_Projectwork
 
                 //hakutulosten tallennus listaan?
 
-
+                return events;
+               
             }
 
             public static void askADate()
