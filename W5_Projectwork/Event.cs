@@ -35,18 +35,11 @@ namespace W5_Projectwork
 
         public class Location
         {
-            public Lat lat { get; set; }
-            public Lon lon { get; set; }
+            public double lat { get; set; }
+            public double lon { get; set; }
             public Address address { get; set; }
         }
-
-        public class Lat
-        {
-        }
-
-        public class Lon
-        {
-        }
+    
 
         public class Address
         {
