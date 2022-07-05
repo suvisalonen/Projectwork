@@ -12,13 +12,13 @@ namespace W5_Projectwork
 
             Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
 
-            //Input.menuSelectionLogic();
+            Input.menuSelectionLogic();
             Console.WriteLine();
 
 
-            HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
+            //HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
 
-            Console.WriteLine(response.id);
+            //Console.WriteLine(response.id);
         }
 
 
@@ -45,6 +45,35 @@ namespace W5_Projectwork
                     else if (input == "2")
                     {
                         //Events
+                        Dictionary<string, string> EventTags = new Dictionary<string, string>();
+                        EventTags.Add("1", "v1/events/?tags_search=Musiikki");
+                        EventTags.Add("2", "v1/events/?tags_filter=Nuorille");
+                        EventTags.Add("3", "v1/events/?tags_filter=shows");
+
+                        Console.WriteLine("Millaisia tapahtumia haluat etsiä:");
+                        Console.WriteLine("1) Musiikkitapahtumat");
+                        Console.WriteLine("2) Nuorten tapahtumat");
+                        Console.WriteLine("3) Showt");
+
+                        bool a = true;
+                        while (a)
+                        {
+                            var tagInput = Console.ReadLine();
+
+                            if (EventTags.ContainsKey(tagInput))
+                            {
+                                chooseATag(tagInput, EventTags);
+                                a = false;
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("Pahoittelut, valitsemaasi lukua ei löytynyt valikosta. Valitse uudelleen.");
+                                a = true;
+                            }
+                        }
+                        
+
                         i = false;
                     }
                     else
@@ -55,14 +84,11 @@ namespace W5_Projectwork
 
             }
 
-            public static void chooseATag(List<string> Tags)
+            public static void chooseATag(string tag, Dictionary<string, string> tagDictionary)
             {
-                //valitse tägi
-                Console.WriteLine("Mitä haluat tehdä");
-                foreach (var item in Tags)
-                {
-                    Console.WriteLine(item);
-                }
+
+                tagDictionary[tag];
+                
 
                 bool i = true;
                 while (i)
