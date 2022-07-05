@@ -12,13 +12,13 @@ namespace W5_Projectwork
 
             Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
 
-            //Input.menuSelectionLogic();
+            Input.menuSelectionLogic();
             Console.WriteLine();
 
 
-            HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
+            //HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
 
-            Console.WriteLine(response.name.fi);
+            //Console.WriteLine(response.name.fi);
         }
 
 
@@ -129,6 +129,8 @@ namespace W5_Projectwork
 
                 Console.WriteLine("Syötä haluamasi päivämäärä: ");
                 string userInput = Console.ReadLine();
+
+
 
 
             }
