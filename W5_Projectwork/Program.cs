@@ -9,20 +9,26 @@ namespace W5_Projectwork
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("Tervetuloa tapahtumahakuun");
+            //Console.WriteLine("Tervetuloa tapahtumahakuun");
+            //
+            //Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
+            //Dictionary<string, string> EventTags = new Dictionary<string, string>();
+            //EventTags.Add("1", "v1/events/?tags_search=Musiikki");
+            //EventTags.Add("2", "v1/events/?tags_filter=Nuorille");
+            //EventTags.Add("3", "v1/events/?tags_filter=shows");
+            //var events = await Input.SearchWithTag("1", EventTags);
+            //
+            //
+            //Console.WriteLine(events);
 
-            Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
-            Dictionary<string, string> EventTags = new Dictionary<string, string>();
-            EventTags.Add("1", "v1/events/?tags_search=Musiikki");
-            EventTags.Add("2", "v1/events/?tags_filter=Nuorille");
-            EventTags.Add("3", "v1/events/?tags_filter=shows");
-            var events = await Input.SearchWithTag("1", EventTags);
 
+           List<HelsinkiEvent> response = await Rest.HelsinkiApiRestClientV2("v1/events/?tags_search=Musiikki");
 
-            Console.WriteLine(events);
+            foreach (var item in response)
+            {
+                Console.WriteLine(item.name.fi);
+            }
 
-
-           //HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
 
             //Console.WriteLine(response.name.fi);
         }
