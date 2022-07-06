@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
+
 namespace W5_Projectwork
 {
     class Program
@@ -18,21 +19,21 @@ namespace W5_Projectwork
             EventTags.Add("3", "v1/events/?tags_filter=shows");
             var events = await Input.SearchWithTag("1", EventTags);
 
+<<<<<<< HEAD
+            HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
+           
 
-            //olio-käyttäjän haulleg
-            //
-            //postinumero
-            //koordinaatit
-            //tagit
-            //päivämäärä
-            Input.menuSelectionLogic();
+            ////testausta 
+            ///
+            List<HelsinkiEvent> eventti = new List<HelsinkiEvent>();
+            eventti.Add(response);
 
-            Input.askADate();
-            
-            Input.print();
-            
-             
-            Console.WriteLine();
+            Input.print(eventti);
+
+            ///
+            Console.WriteLine(response.name.fi);
+
+=======
 
             Console.WriteLine(events);
 
@@ -40,6 +41,7 @@ namespace W5_Projectwork
            //HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
 
             //Console.WriteLine(response.name.fi);
+>>>>>>> af98632884d52bfb7ac3fe5ac6eb2ccb5ddae19c
         }
 
 
@@ -150,14 +152,14 @@ namespace W5_Projectwork
 
             //käydään lista läpi ja haetaan päivämäärän mukaiset tapahtumat uuteen listaan
 
-            public static Task<List<HelsinkiEvent>> DateFilterList()
-            {
-                Task<List<HelsinkiEvent>> FilteredList = new List<HelsinkiEvent>();
-
-                foreach (var item in collection) //collection= list muuttuja joka tulee choose a tag metodista
-                {
-                    if (item.startingDay >= input && item >= item.endingDay)
-                        FilteredList.Add(item);
+                       // List<string> FilteredList = new List<string>();
+                       //
+                       // foreach (var item in Filted) //collection= list muuttuja joka tulee choose a tag metodista
+                       // {
+                       //     if (item.startingDay > input > item.endingDay)
+                       //         FilteredList.Add(item);
+                       // }
+                       //
 
                     return FilteredList;
                 }
@@ -165,14 +167,23 @@ namespace W5_Projectwork
 
 
 
-            public static void print()
+            
+            public static void print(List<HelsinkiEvent> listOfEvents) //Roosan tekemä
             {
-                //printtaus
+                foreach (var item in listOfEvents)
+                {
+                    Console.WriteLine(item.name.fi);
+                    Console.WriteLine("Osoite: \n {0}", item.location);
+                    Console.WriteLine("Aikataulu: \n {0}", item.eventDates);
+                    Console.WriteLine("Tapahtuman sivut: \n {0}", item.infoUrl);
+                }
+                
+
             }
            
 	
 
-
+            
 	
 
 

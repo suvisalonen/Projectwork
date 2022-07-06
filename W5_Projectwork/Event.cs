@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 
 namespace W5_Projectwork
 {
-    
-    
-        public class HelsinkiEvent
+
+    public class HelsinkiEvent
         {
             public string id { get; set; }
             public Name name { get; set; }
