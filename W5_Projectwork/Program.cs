@@ -104,7 +104,7 @@ namespace W5_Projectwork
                
             }
             //Ilari
-            public static void AskADate<T>(List<T> list)
+            public static void AskADate<T>(List<HelsinkiEvent> events)
             {
                 //kysy päivämäärää tai printtaa päivän mukaan
                 //
@@ -118,7 +118,7 @@ namespace W5_Projectwork
                     ParseSucces = DateTime.TryParse(userInput, out DateTime input);
                     if (ParseSucces)
                     {
-                        DateFilterList(list, input);
+                        DateFilterList(events, input);
                     }
                     else
                     {
@@ -129,11 +129,11 @@ namespace W5_Projectwork
             }
 
             //käydään lista läpi ja haetaan päivämäärän mukaiset tapahtumat uuteen listaan
-            public static List<HelsinkiEvent> DateFilterList(List<HelsinkiEvent> list, DateTime input) 
+            public static List<HelsinkiEvent> DateFilterList(List<HelsinkiEvent> events, DateTime input) 
             { 
                         List<HelsinkiEvent> FilteredList = new List<HelsinkiEvent>();
                        
-                        foreach (var item in list) //collection= list muuttuja joka tulee choose a tag metodista
+                        foreach (var item in events) //collection= list muuttuja joka tulee choose a tag metodista
                         {
                            if (item.eventDates.startingDay >= input && input >= item.eventDates.endingDay)
                                 FilteredList.Add(item);
@@ -141,8 +141,8 @@ namespace W5_Projectwork
                        
 
                     return FilteredList;
-                }
             }
+        }
 
 
 
@@ -166,6 +166,6 @@ namespace W5_Projectwork
 	
 
 
-        }
+        
     }
 }
