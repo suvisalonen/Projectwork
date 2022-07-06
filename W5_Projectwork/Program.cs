@@ -14,11 +14,15 @@ namespace W5_Projectwork
 
             Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
 
-            Input.menuSelectionLogic();
+            //await Input.menuSelectionLogic();
 
-            
-            
 
+            List<HelsinkiEvent> evetnsList = await Rest.HelsinkiApiRestClientV2("v1/events/?tags_search=Musiikki");
+
+            foreach (var hkievent in evetnsList)
+            {
+                Console.WriteLine(hkievent.eventDates.startingDay);
+            }
 
         }
 
@@ -115,7 +119,9 @@ namespace W5_Projectwork
                 while (ParseSucces == false)
                 {
                     string userInput = Console.ReadLine();
-                    ParseSucces = DateTime.TryParse(userInput, out DateTime input);
+                    //ParseSucces = DateTime.TryParse(userInput, out DateTime input);
+                    ParseSucces = true;
+                    DateTime input = DateTime.Now;
                     if (ParseSucces)
                     {
                         foreach (var item in DateFilterList(events, input))
@@ -140,6 +146,7 @@ namespace W5_Projectwork
                        
                         foreach (var item in events) //collection= list muuttuja joka tulee choose a tag metodista
                         {
+                            Console.WriteLine(item.eventDates.startingDay);
                            if (item.eventDates.startingDay >= input && input >= item.eventDates.endingDay)
                                 FilteredList.Add(item);
                         }

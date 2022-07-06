@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,20 +31,32 @@ namespace W5_Projectwork
             //Sampsa, Mukailtu tätä: https://www.newtonsoft.com/json/help/html/SerializingJSONFragments.htm
 
             string events = await ApiHelper.GetJSONAsync<string>(eventsUrl, urlParams);
-            
-            JObject eventsJson = JObject.Parse(events);
 
-            IList<JToken> eventDataPartOfResponse = eventsJson["data"].Children().ToList();
-
-            IList<HelsinkiEvent> helsinkiEvents = new List<HelsinkiEvent>();
-
-            foreach (JToken hellEvent in eventDataPartOfResponse)
+            try
             {
-                HelsinkiEvent helsinkiEventData = hellEvent.ToObject<HelsinkiEvent>();
-                helsinkiEvents.Add(helsinkiEventData);
+
+                JObject eventsJson = JObject.Parse(events);
+
+                IList<JToken> eventDataPartOfResponse = eventsJson["data"].Children().ToList();
+
+                IList<HelsinkiEvent> helsinkiEvents = new List<HelsinkiEvent>();
+
+                foreach (JToken hellEvent in eventDataPartOfResponse)
+                {
+                    HelsinkiEvent helsinkiEventData = hellEvent.ToObject<HelsinkiEvent>();
+                    helsinkiEvents.Add(helsinkiEventData);
+                }
+                return new List<HelsinkiEvent>(helsinkiEvents);
+            }
+            catch (System.Exception e)
+            {
+
+                Console.WriteLine(e);
+                return new List<HelsinkiEvent>();
             }
 
-            return new List<HelsinkiEvent>(helsinkiEvents);
+
+            
         }
 
     }

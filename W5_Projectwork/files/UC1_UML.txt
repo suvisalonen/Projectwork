@@ -1,0 +1,39 @@
+@startuml
+title UC1 Get nearby events
+actor User as user
+boundary ConsoleUI as ui
+control InputLogic as input
+database DigitransitAPI as transit
+database HelsinkiAPI as hkiapi
+
+ui --> user: Display Welcome msg\n& instructions
+user -> input: Select \n"List nearby events" UC
+
+ui --> user: Ask for postalcode
+user -> input: Input postalcode
+input -> input: Validate\nselection
+input -> transit: Request postalcode\ncoordinates
+note right: GET http://api.digitransit.fi/geocoding/v1/search?\ntext={postalCode}&size=1
+activate transit
+
+
+ui --> user: Show list of tags
+user -> input: Select filter tag
+input -> input: Validate\nselection
+
+ui --> user: Ask date
+user -> input: Input filter date
+input -> input: Validate\nselection
+
+transit --> input: HTTP 200 OK
+deactivate transit
+
+input -> hkiapi: Request list of events
+note right: GET http://open-api.myhelsinki.fi/v1/events/?\ntags_search={tag}&distance_filter={lat},{lon},{range}
+activate hkiapi
+hkiapi --> input: HTTP 200 OK
+deactivate hkiapi
+
+ui --> user: Print nearby events
+
+@enduml
