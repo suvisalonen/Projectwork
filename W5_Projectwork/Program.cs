@@ -26,7 +26,7 @@ namespace W5_Projectwork
 
             foreach (var item in response)
             {
-                Console.WriteLine(item.name.fi);
+                Console.WriteLine(item.eventDates.);
             }
 
 
@@ -56,6 +56,9 @@ namespace W5_Projectwork
 
                     else if (input == "2")
                     {
+                        HelsinkiEventDataTransferObject newEventFilters = new HelsinkiEventDataTransferObject();
+
+                        newEventFilters.PostalCode = askPostalCode();
                         //Events
                         Dictionary<string, string> EventTags = new Dictionary<string, string>();
                         EventTags.Add("1", "v1/events/?tags_search=Musiikki");
@@ -67,6 +70,8 @@ namespace W5_Projectwork
                         Console.WriteLine("2) Nuorten tapahtumat");
                         Console.WriteLine("3) Showt");
 
+                        Rest.HelsinkiApiRestClientV2(newEventFilters);
+
                         bool a = true;
                         while (a)
                         {
@@ -74,7 +79,7 @@ namespace W5_Projectwork
 
                             if (EventTags.ContainsKey(tagInput))
                             {
-                                SearchWithTag(tagInput, EventTags);
+
                                 a = false;
 
                             }
