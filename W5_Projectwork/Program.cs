@@ -123,7 +123,7 @@ namespace W5_Projectwork
                 {
                     //Events
                     
-                    string postalcode = AskPostalcode();
+                    string postalcode = GetPostalcode();
 
                     Dictionary<string, string> postalcodeCoordinates = await GeoCoordinatesUtil.GetGeoCoordinatesAsync(postalcode);
                     int searchRange = 5;
@@ -133,7 +133,6 @@ namespace W5_Projectwork
                     EventTags.Add("1", $"v1/events/?tags_search=Musiikki&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
                     EventTags.Add("2", $"v1/events/?tags_filter=Nuorille&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
                     EventTags.Add("3", $"v1/events/?tags_filter=shows&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
-                    Console.WriteLine(EventTags["1"]);
 
                     Console.WriteLine("Millaisia tapahtumia haluat etsiä:");
                     Console.WriteLine("1) Musiikkitapahtumat");
@@ -179,8 +178,9 @@ namespace W5_Projectwork
                 }
 
                 //Sampsa
-                public static string AskPostalcode()
+                public static string GetPostalcode()
                 {
+                    Console.Clear();
                     Console.WriteLine("Syötä postinumero");
                     string userInputtedPostalcode = Console.ReadLine();
                     while (!GeoCoordinatesUtil.IsValidPostalCode(userInputtedPostalcode)) 
