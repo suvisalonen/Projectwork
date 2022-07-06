@@ -14,7 +14,7 @@ namespace W5_Projectwork
 
             Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
 
-            Input.menuSelectionLogic();
+            await Input.menuSelectionLogic();
 
             
             
@@ -78,7 +78,7 @@ namespace W5_Projectwork
 
                     if (EventTags.ContainsKey(tagInput))
                     {
-                        AskADate(await SearchWithTag(tagInput, EventTags));
+                        await AskADate(await SearchWithTag(tagInput, EventTags));
                         correctKeyLoop = false;
 
                     }
@@ -104,7 +104,7 @@ namespace W5_Projectwork
                
             }
             //Ilari
-            public static void AskADate(List<HelsinkiEvent> events)
+            public static async Task AskADate(List<HelsinkiEvent> events)
             {
                 //kysy päivämäärää tai printtaa päivän mukaan
                 //
@@ -141,7 +141,9 @@ namespace W5_Projectwork
                         foreach (var item in events) //collection= list muuttuja joka tulee choose a tag metodista
                         {
                            if (item.eventDates.startingDay >= input && input >= item.eventDates.endingDay)
-                                FilteredList.Add(item);
+                        FilteredList.Add(item);
+                           else if (input == null)
+                        Console.WriteLine("Ei tapahtumia");
                         }
                        
 
