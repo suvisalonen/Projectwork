@@ -17,7 +17,7 @@ namespace W5_Projectwork
             return result;
         }
 
-        public static async Task<Dictionary<string, double>> GetGeoCoordinatesAsync(string postalCode)
+        public static async Task<Dictionary<string, string>> GetGeoCoordinatesAsync(string postalCode)
         {
 
             if (IsValidPostalCode(postalCode))
@@ -25,10 +25,10 @@ namespace W5_Projectwork
                 string geoJSON = await GeoCoordinatesUtil.DigiTransitRestClient(postalCode);
 
                 dynamic result = JsonConvert.DeserializeObject<dynamic>(geoJSON);
-                dynamic latitude = (double)result.features[0].geometry.coordinates[0];
-                dynamic longitude = (double)result.features[0].geometry.coordinates[1];
+                dynamic latitude = (string)result.features[0].geometry.coordinates[0];
+                dynamic longitude = (string)result.features[0].geometry.coordinates[1];
 
-                Dictionary<string, double> postalCodeGeoCoordinates = new Dictionary<string, double>
+                Dictionary<string, string> postalCodeGeoCoordinates = new Dictionary<string, string>
             {
                 {"lat", latitude},
                 {"lon", longitude}
@@ -40,15 +40,16 @@ namespace W5_Projectwork
             else
             {
 
-                return new Dictionary<string, double>
+                return new Dictionary<string, string>
             {
-                { "lat", 0},
-                { "lon", 0}
+                { "lat", "0"},
+                { "lon", "0"}
                 };
             }
 
 
         }
+
 
         public static bool IsValidPostalCode(string postalCode)
         {

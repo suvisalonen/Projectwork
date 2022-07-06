@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using W5_Projectwork_Places;
 using System.Linq;
-
+using System.Globalization;
 
 namespace W5_Projectwork
 {
@@ -17,10 +17,6 @@ namespace W5_Projectwork
             Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
 
             await Input.menuSelectionLogic();
-
-
-
-
 
         }
 
@@ -82,7 +78,6 @@ namespace W5_Projectwork
                     Console.WriteLine("Tapahtuman sivut: \n {0}", item.infoUrl);
                 }
 
-
             }
 
         }
@@ -127,11 +122,18 @@ namespace W5_Projectwork
                 public static async Task menuEvents()
                 {
                     //Events
-                    Dictionary<string, string> EventTags = new Dictionary<string, string>();
-                    EventTags.Add("1", "v1/events/?tags_search=Musiikki");
-                    EventTags.Add("2", "v1/events/?tags_filter=Nuorille");
-                    EventTags.Add("3", "v1/events/?tags_filter=shows");
+                    
+                    string postalcode = AskPostalcode();
 
+                    Dictionary<string, string> postalcodeCoordinates = await GeoCoordinatesUtil.GetGeoCoordinatesAsync(postalcode);
+                    int searchRange = 5;
+
+
+                    Dictionary<string, string> EventTags = new Dictionary<string, string>();
+                    EventTags.Add("1", $"v1/events/?tags_search=Musiikki&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
+                    EventTags.Add("2", $"v1/events/?tags_filter=Nuorille&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
+                    EventTags.Add("3", $"v1/events/?tags_filter=shows&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
+                    Console.WriteLine(EventTags["1"]);
 
                     Console.WriteLine("Millaisia tapahtumia haluat etsiä:");
                     Console.WriteLine("1) Musiikkitapahtumat");
@@ -176,6 +178,21 @@ namespace W5_Projectwork
 
                 }
 
+                //Sampsa
+                public static string AskPostalcode()
+                {
+                    Console.WriteLine("Syötä postinumero");
+                    string userInputtedPostalcode = Console.ReadLine();
+                    while (!GeoCoordinatesUtil.IsValidPostalCode(userInputtedPostalcode)) 
+                    {
+                        Console.WriteLine("Syötä validi postikoodi");
+                        userInputtedPostalcode = Console.ReadLine();
+                    }
+                    return userInputtedPostalcode;
+                }
+
+                
+
                 //Ilari
                 public static async Task AskADate(List<HelsinkiEvent> events)
                 {
@@ -194,11 +211,12 @@ namespace W5_Projectwork
                         ParseSucces = DateTime.TryParse(userInput, out DateTime input);
                         if (ParseSucces)
                         {
-                            foreach (var item in DateFilterList(events, input))
-                            {
-                                Console.WriteLine(item);
-                            }
-
+                            //foreach (var item in DateFilterList(events, input))
+                            //{
+                            //    Console.WriteLine(item);
+                            //}
+                            //
+                            
                             DateFilterList(events, input);
 
                         }
@@ -238,7 +256,7 @@ namespace W5_Projectwork
                     foreach (var item in listOfEvents)
                     {
                         Console.WriteLine(item.name.fi);
-                        Console.WriteLine("Osoite: \n {0}", item.location);
+                        Console.WriteLine("Osoite: \n {0}", item.location.address);
                         Console.WriteLine("Aikataulu: \n {0}", item.eventDates);
                         Console.WriteLine("Tapahtuman sivut: \n {0}", item.infoUrl);
                     }
@@ -246,10 +264,6 @@ namespace W5_Projectwork
 
                 }
             }
-
-
-
-
         }
     }
 }
