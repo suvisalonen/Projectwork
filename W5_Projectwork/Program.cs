@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+
 namespace W5_Projectwork
 {
     class Program
@@ -11,10 +12,13 @@ namespace W5_Projectwork
             Console.WriteLine("Tervetuloa tapahtumahakuun");
 
             Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
+            Dictionary<string, string> EventTags = new Dictionary<string, string>();
+            EventTags.Add("1", "v1/events/?tags_search=Musiikki");
+            EventTags.Add("2", "v1/events/?tags_filter=Nuorille");
+            EventTags.Add("3", "v1/events/?tags_filter=shows");
+            var events = await Input.SearchWithTag("1", EventTags);
 
-            //Input.menuSelectionLogic();
-            Console.WriteLine();
-
+<<<<<<< HEAD
             HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
            
 
@@ -28,6 +32,15 @@ namespace W5_Projectwork
             ///
             Console.WriteLine(response.name.fi);
 
+=======
+
+            Console.WriteLine(events);
+
+
+           //HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
+
+            //Console.WriteLine(response.name.fi);
+>>>>>>> af98632884d52bfb7ac3fe5ac6eb2ccb5ddae19c
         }
 
 
@@ -71,7 +84,7 @@ namespace W5_Projectwork
 
                             if (EventTags.ContainsKey(tagInput))
                             {
-                                chooseATag(tagInput, EventTags);
+                                SearchWithTag(tagInput, EventTags);
                                 a = false;
 
                             }
@@ -93,51 +106,53 @@ namespace W5_Projectwork
 
             }
 
-            public static void chooseATag(string tag, Dictionary<string, string> tagDictionary)
+            //Suvin tekemä metodi
+            public static async Task<List<HelsinkiEvent>> SearchWithTag(string tag, Dictionary<string, string> tagDictionary) 
             {
 
-                //tagDictionary[tag];
-                
+                var urlParams = tagDictionary[tag];
 
-                bool i = true;
-                while (i)
-                {
-                    string input = Console.ReadLine();
+                var events= await Rest.HelsinkiApiRestClient(urlParams);
+                //hakumetodi 
 
-                    if (input == "1")
-                    {
+                //hakutulosten tallennus listaan?
 
-                        //1
-                        i = false;
-                    }
-
-                    else if (input == "2")
-                    {
-                        //2
-                        i = false;
-                    }
-                    else if (input == "3")
-                    {
-                        //3
-                        i = false;
-                    }
-                    else
-                    {
-                        Console.WriteLine("ERROR!");
-                    }
-                }
-
-
-                
+                return events;
+               
             }
-
+            //Ilari
             public static void askADate()
             {
                 //kysy päivämäärää tai printtaa päivän mukaan
                 //
-
                 Console.WriteLine("Syötä haluamasi päivämäärä: ");
-                string userInput = Console.ReadLine();
+
+
+                bool succes = false;
+                while (succes == false)
+                {
+                    string userInput = Console.ReadLine();
+                    succes = DateTime.TryParse(userInput, out DateTime input);
+                    if (succes)
+                    {
+                        //käydään lista läpi ja haetaan päivämäärän mukaiset tapahtumat uuteen listaan
+
+                       // List<string> FilteredList = new List<string>();
+                       //
+                       // foreach (var item in Filted) //collection= list muuttuja joka tulee choose a tag metodista
+                       // {
+                       //     if (item.startingDay > input > item.endingDay)
+                       //         FilteredList.Add(item);
+                       // }
+                       //
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("try again");
+                    }
+                }
+
 
 
             }
