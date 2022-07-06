@@ -15,10 +15,19 @@ namespace W5_Projectwork
             //Input.menuSelectionLogic();
             Console.WriteLine();
 
-
             HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
+           
 
+            ////testausta 
+            ///
+            List<HelsinkiEvent> eventti = new List<HelsinkiEvent>();
+            eventti.Add(response);
+
+            Input.print(eventti);
+
+            ///
             Console.WriteLine(response.name.fi);
+
         }
 
 
@@ -133,14 +142,23 @@ namespace W5_Projectwork
 
             }
 
-            public static void print()
+            
+            public static void print(List<HelsinkiEvent> listOfEvents) //Roosan tekemä
             {
-                //printtaus
+                foreach (var item in listOfEvents)
+                {
+                    Console.WriteLine(item.name.fi);
+                    Console.WriteLine("Osoite: \n {0}", item.location);
+                    Console.WriteLine("Aikataulu: \n {0}", item.eventDates);
+                    Console.WriteLine("Tapahtuman sivut: \n {0}", item.infoUrl);
+                }
+                
+
             }
            
 	
 
-
+            
 	
 
 
