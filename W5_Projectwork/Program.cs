@@ -13,10 +13,10 @@ namespace W5_Projectwork
             Console.WriteLine("Tervetuloa tapahtumahakuun");
 
             Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
-            
-            
 
+            Input.menuSelectionLogic();
 
+            
             
 
 
@@ -27,7 +27,7 @@ namespace W5_Projectwork
         public class Input
         {
 
-            public static void menuSelectionLogic()
+            public static async Task menuSelectionLogic()
             {
                
 
@@ -46,7 +46,7 @@ namespace W5_Projectwork
                     else if (input == "2")
                     {
 
-                        menuEvents();
+                       await menuEvents();
 
                         correctInputLoop = false;
                     }
@@ -58,7 +58,7 @@ namespace W5_Projectwork
 
             }
 
-            public static void menuEvents()
+            public static async Task menuEvents()
             {
                 //Events
                 Dictionary<string, string> EventTags = new Dictionary<string, string>();
@@ -78,7 +78,7 @@ namespace W5_Projectwork
 
                     if (EventTags.ContainsKey(tagInput))
                     {
-                        SearchWithTag(tagInput, EventTags);
+                        AskADate(await SearchWithTag(tagInput, EventTags));
                         correctKeyLoop = false;
 
                     }
@@ -95,7 +95,7 @@ namespace W5_Projectwork
 
                 var urlParams = tagDictionary[tag];
 
-                var events= await Rest.HelsinkiApiRestClient(urlParams);
+                var events= await Rest.HelsinkiApiRestClientV2(urlParams);
                 //hakumetodi 
 
                 //hakutulosten tallennus listaan?
@@ -104,7 +104,7 @@ namespace W5_Projectwork
                
             }
             //Ilari
-            public static void AskADate<T>(List<HelsinkiEvent> events)
+            public static void AskADate(List<HelsinkiEvent> events)
             {
                 //kysy päivämäärää tai printtaa päivän mukaan
                 //
@@ -118,7 +118,12 @@ namespace W5_Projectwork
                     ParseSucces = DateTime.TryParse(userInput, out DateTime input);
                     if (ParseSucces)
                     {
+                        foreach (var item in DateFilterList(events, input))
+                        {
+                            Console.WriteLine(item);
+                        }
                         DateFilterList(events, input);
+                       
                     }
                     else
                     {
