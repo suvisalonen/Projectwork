@@ -72,14 +72,14 @@ namespace W5_Projectwork
                 return placesList;
 
             }
-            public static void PrintPlace(List<HelsinkiPlaces> listOfPlaces) //Roosan tekemä
+            public static void PrintPlace(List<Place> placesList) //Roosan tekemä
             {
-                foreach (var item in listOfPlaces)
+                foreach (var item in placesList)
                 {
                     Console.WriteLine(item.name.fi+ "\n");
-                    Console.WriteLine("Paikan kuvaus: \n {0}", item.Description.intro);
+                    Console.WriteLine("Paikan kuvaus: \n {0}", item.description.intro);
                     Console.WriteLine("Osoite: \n {0}", item.location);
-                    Console.WriteLine("Paikan sivut: \n {0}", item.infoUrl);
+                    Console.WriteLine("Paikan sivut: \n {0}", item.info_url);
                
                 }
             }
