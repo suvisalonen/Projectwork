@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 
 namespace W5_Projectwork
@@ -9,28 +10,37 @@ namespace W5_Projectwork
     {
         static async Task Main(string[] args)
         {
-            //Console.WriteLine("Tervetuloa tapahtumahakuun");
-            //
-            //Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
-            //Dictionary<string, string> EventTags = new Dictionary<string, string>();
-            //EventTags.Add("1", "v1/events/?tags_search=Musiikki");
-            //EventTags.Add("2", "v1/events/?tags_filter=Nuorille");
-            //EventTags.Add("3", "v1/events/?tags_filter=shows");
-            //var events = await Input.SearchWithTag("1", EventTags);
-            //
-            //
-            //Console.WriteLine(events);
+            Console.WriteLine("Tervetuloa tapahtumahakuun");
 
+            Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
+            Dictionary<string, string> EventTags = new Dictionary<string, string>();
+            EventTags.Add("1", "v1/events/?tags_search=Musiikki");
+            EventTags.Add("2", "v1/events/?tags_filter=Nuorille");
+            EventTags.Add("3", "v1/events/?tags_filter=shows");
+            var events = await Input.SearchWithTag("1", EventTags);
 
-           List<HelsinkiEvent> response = await Rest.HelsinkiApiRestClientV2("v1/events/?tags_search=Musiikki");
+<<<<<<< HEAD
+            HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
+           
 
-            foreach (var item in response)
-            {
-                Console.WriteLine(item.eventDates.);
-            }
+            ////testausta 
+            ///
+            List<HelsinkiEvent> eventti = new List<HelsinkiEvent>();
+            eventti.Add(response);
+
+            Input.print(eventti);
+
+            ///
+            Console.WriteLine(response.name.fi);
+
+=======
+
+            Console.WriteLine(events);
+
 
 
             //Console.WriteLine(response.name.fi);
+>>>>>>> af98632884d52bfb7ac3fe5ac6eb2ccb5ddae19c
         }
 
 
@@ -42,8 +52,8 @@ namespace W5_Projectwork
             {
                
 
-                bool i = true;
-                while (i)
+                bool correctInputLoop = true;
+                while (correctInputLoop)
                 {
                     string input = Console.ReadLine();
 
@@ -51,54 +61,53 @@ namespace W5_Projectwork
                     {
 
                         //places
-                        i = false;
+                        correctInputLoop = false;
                     }
 
                     else if (input == "2")
                     {
-                        HelsinkiEventDataTransferObject newEventFilters = new HelsinkiEventDataTransferObject();
 
-                        newEventFilters.PostalCode = askPostalCode();
-                        //Events
-                        Dictionary<string, string> EventTags = new Dictionary<string, string>();
-                        EventTags.Add("1", "v1/events/?tags_search=Musiikki");
-                        EventTags.Add("2", "v1/events/?tags_filter=Nuorille");
-                        EventTags.Add("3", "v1/events/?tags_filter=shows");
+                        menuEvents();
 
-                        Console.WriteLine("Millaisia tapahtumia haluat etsiä:");
-                        Console.WriteLine("1) Musiikkitapahtumat");
-                        Console.WriteLine("2) Nuorten tapahtumat");
-                        Console.WriteLine("3) Showt");
-
-                        Rest.HelsinkiApiRestClientV2(newEventFilters);
-
-                        bool a = true;
-                        while (a)
-                        {
-                            var tagInput = Console.ReadLine();
-
-                            if (EventTags.ContainsKey(tagInput))
-                            {
-
-                                a = false;
-
-                            }
-                            else
-                            {
-                                Console.WriteLine("Pahoittelut, valitsemaasi lukua ei löytynyt valikosta. Valitse uudelleen.");
-                                a = true;
-                            }
-                        }
-                        
-
-                        i = false;
+                        correctInputLoop = false;
                     }
                     else
                     {
-                        Console.WriteLine("ERROR!");
+                        Console.WriteLine("Please enter a correct input");
                     }
                 }
 
+            }
+
+            public static void menuEvents()
+            {
+                //Events
+                Dictionary<string, string> EventTags = new Dictionary<string, string>();
+                EventTags.Add("1", "v1/events/?tags_search=Musiikki");
+                EventTags.Add("2", "v1/events/?tags_filter=Nuorille");
+                EventTags.Add("3", "v1/events/?tags_filter=shows");
+
+                Console.WriteLine("Millaisia tapahtumia haluat etsiä:");
+                Console.WriteLine("1) Musiikkitapahtumat");
+                Console.WriteLine("2) Nuorten tapahtumat");
+                Console.WriteLine("3) Showt");
+
+                bool correctKeyLoop = true;
+                while (correctKeyLoop)
+                {
+                    var tagInput = Console.ReadLine();
+
+                    if (EventTags.ContainsKey(tagInput))
+                    {
+                        SearchWithTag(tagInput, EventTags);
+                        correctKeyLoop = false;
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Pahoittelut, valitsemaasi lukua ei löytynyt valikosta. Valitse uudelleen.");
+                    }
+                }
             }
 
             //Suvin tekemä metodi
@@ -116,21 +125,31 @@ namespace W5_Projectwork
                
             }
             //Ilari
-            public static void askADate()
+            public static void AskADate()
             {
                 //kysy päivämäärää tai printtaa päivän mukaan
                 //
                 Console.WriteLine("Syötä haluamasi päivämäärä: ");
 
 
-                bool succes = false;
-                while (succes == false)
+                bool ParseSucces = false;
+                while (ParseSucces == false)
                 {
                     string userInput = Console.ReadLine();
-                    succes = DateTime.TryParse(userInput, out DateTime input);
-                    if (succes)
+                    ParseSucces = DateTime.TryParse(userInput, out DateTime input);
+                    if (ParseSucces)
                     {
-                        //käydään lista läpi ja haetaan päivämäärän mukaiset tapahtumat uuteen listaan
+                        DateFilterList();
+                    }
+                    else
+                    {
+                        Console.WriteLine("try again");
+                    }
+                }
+
+            }
+
+            //käydään lista läpi ja haetaan päivämäärän mukaiset tapahtumat uuteen listaan
 
                        // List<string> FilteredList = new List<string>();
                        //
@@ -141,25 +160,29 @@ namespace W5_Projectwork
                        // }
                        //
 
-                    }
-                    else
-                    {
-                        Console.WriteLine("try again");
-                    }
+                    return FilteredList;
                 }
-
-
-
             }
 
-            public static void print()
+
+
+            
+            public static void print(List<HelsinkiEvent> listOfEvents) //Roosan tekemä
             {
-                //printtaus
+                foreach (var item in listOfEvents)
+                {
+                    Console.WriteLine(item.name.fi);
+                    Console.WriteLine("Osoite: \n {0}", item.location);
+                    Console.WriteLine("Aikataulu: \n {0}", item.eventDates);
+                    Console.WriteLine("Tapahtuman sivut: \n {0}", item.infoUrl);
+                }
+                
+
             }
            
 	
 
-
+            
 	
 
 
