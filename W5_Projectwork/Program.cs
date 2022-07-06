@@ -151,15 +151,15 @@ namespace W5_Projectwork
             }
 
             //käydään lista läpi ja haetaan päivämäärän mukaiset tapahtumat uuteen listaan
-
-                       // List<string> FilteredList = new List<string>();
-                       //
-                       // foreach (var item in Filted) //collection= list muuttuja joka tulee choose a tag metodista
-                       // {
-                       //     if (item.startingDay > input > item.endingDay)
-                       //         FilteredList.Add(item);
-                       // }
-                       //
+            public static Task<List<HelsinkiEvent>> DateFilterList() { 
+                        List<string> FilteredList = new List<string>();
+                       
+                        foreach (var item in ) //collection= list muuttuja joka tulee choose a tag metodista
+                        {
+                           if (item.startingDay > input > item.endingDay)
+                                FilteredList.Add(item);
+                        }
+                       
 
                     return FilteredList;
                 }
