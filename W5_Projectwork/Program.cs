@@ -264,6 +264,8 @@ namespace W5_Projectwork
 
                 public static void PrintEvent(List<HelsinkiEvent> listOfEvents) //Roosan tekemä
                 {
+                    Console.Clear();
+                    int consoleBufferHeight = Console.WindowHeight;
                     foreach (var item in listOfEvents)
                     {
                         string endingDateText = item.eventDates.endingDay.ToString();
@@ -271,12 +273,19 @@ namespace W5_Projectwork
                         {
                             endingDateText = "->";
                         }
-
+                        Console.WriteLine("");
                         Console.WriteLine(item.name.fi);
                         Console.WriteLine("Osoite: \n {0}", item.location.address.streetAddress);
                         Console.WriteLine("Aikataulu: \n {0} - {1}", item.eventDates.startingDay, endingDateText);
                         Console.WriteLine("Tapahtuman sivut: \n {0}", item.infoUrl);
                         Console.WriteLine("--------------------------------------------------");
+
+                        if (Console.CursorTop + 5 > consoleBufferHeight)
+                        {
+                            Console.Write("Seuraavalle sivulle enterillä");
+                            while (Console.ReadKey().Key != ConsoleKey.Enter) { };
+                            Console.Clear();
+                        }
                     
                     }
 
