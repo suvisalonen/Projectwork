@@ -25,8 +25,8 @@ namespace W5_Projectwork
                 string geoJSON = await GeoCoordinatesUtil.DigiTransitRestClient(postalCode);
 
                 dynamic result = JsonConvert.DeserializeObject<dynamic>(geoJSON);
-                dynamic latitude = (string)result.features[0].geometry.coordinates[0];
-                dynamic longitude = (string)result.features[0].geometry.coordinates[1];
+                dynamic latitude = (string)result.features[0].geometry.coordinates[1];
+                dynamic longitude = (string)result.features[0].geometry.coordinates[0];
 
                 Dictionary<string, string> postalCodeGeoCoordinates = new Dictionary<string, string>
             {

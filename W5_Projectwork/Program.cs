@@ -134,6 +134,8 @@ namespace W5_Projectwork
                     EventTags.Add("2", $"v1/events/?tags_filter=Nuorille&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
                     EventTags.Add("3", $"v1/events/?tags_filter=shows&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
 
+                    Console.WriteLine(EventTags["1"]);
+
                     Console.WriteLine("Millaisia tapahtumia haluat etsiä:");
                     Console.WriteLine("1) Musiikkitapahtumat");
                     Console.WriteLine("2) Nuorten tapahtumat");
@@ -202,7 +204,7 @@ namespace W5_Projectwork
 
                     //kysy päivämäärää tai printtaa päivän mukaan
                     //
-                    Console.WriteLine("Syötä haluamasi päivämäärä: ");
+                    Console.WriteLine("Syötä haluamasi päivämäärä (jätä tyhjäksi jos haluat hakea tapahtumia tänään): ");
 
 
                     bool ParseSucces = false;
@@ -210,12 +212,17 @@ namespace W5_Projectwork
                     {
                         string userInput = Console.ReadLine();
                         ParseSucces = DateTime.TryParse(userInput, out DateTime input);
+                        if (userInput == "")
+                        {
+                            ParseSucces = true;
+                            input = DateTime.Today;
+                        }
                         if (ParseSucces)
                         {
-                            foreach (var item in DateFilterList(events, input))
-                            {
-                                Console.WriteLine(item);
-                            }
+                            //foreach (var item in DateFilterList(events, input))
+                            //{
+                            //    Console.WriteLine(item);
+                            //}
 
                             return DateFilterList(events, input);
 
@@ -259,10 +266,18 @@ namespace W5_Projectwork
                 {
                     foreach (var item in listOfEvents)
                     {
+                        string endingDateText = item.eventDates.endingDay.ToString();
+                        if (item.eventDates.endingDay == default(DateTime))
+                        {
+                            endingDateText = "->";
+                        }
+
                         Console.WriteLine(item.name.fi);
                         Console.WriteLine("Osoite: \n {0}", item.location.address.streetAddress);
-                        Console.WriteLine("Aikataulu: \n {0} - {1}", item.eventDates.startingDay, item.eventDates.endingDay);
+                        Console.WriteLine("Aikataulu: \n {0} - {1}", item.eventDates.startingDay, endingDateText);
                         Console.WriteLine("Tapahtuman sivut: \n {0}", item.infoUrl);
+                        Console.WriteLine("--------------------------------------------------");
+                    
                     }
 
 
