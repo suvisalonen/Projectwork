@@ -46,7 +46,8 @@ namespace W5_Projectwork
 
                     if (EventTags.ContainsKey(tagInput))
                     {
-                        await SearchWithTag(tagInput, EventTags);
+                        var answer = await SearchWithTag(tagInput, EventTags);
+                        PrintPlace(answer);
                         correctKeyLoop = false;
 
                     }
@@ -76,10 +77,10 @@ namespace W5_Projectwork
             {
                 foreach (var item in placesList)
                 {
-                    Console.WriteLine(item.name.fi+ "\n");
+                    Console.WriteLine("\n" + item.name.fi);
                     Console.WriteLine("Paikan kuvaus: \n {0}", item.description.intro);
-                    Console.WriteLine("Osoite: \n {0}", item.location);
-                    Console.WriteLine("Paikan sivut: \n {0}", item.info_url);
+                    Console.WriteLine("Osoite: \n {0}", item.location.address.street_address);
+                    Console.WriteLine("Paikan sivut: \n {0} \n", item.info_url);
                
                 }
             }
@@ -146,7 +147,8 @@ namespace W5_Projectwork
 
                         if (EventTags.ContainsKey(tagInput))
                         {
-                            AskADate(await SearchWithTag(tagInput, EventTags));
+                            var answer = AskADate(await SearchWithTag(tagInput, EventTags));
+                            PrintEvent(answer);
                             correctKeyLoop = false;
 
                         }
@@ -176,7 +178,7 @@ namespace W5_Projectwork
                 }
 
                 //Ilari
-                public static async Task AskADate(List<HelsinkiEvent> events)
+                public static List<HelsinkiEvent> AskADate(List<HelsinkiEvent> events)
                 {
 
 
@@ -198,14 +200,18 @@ namespace W5_Projectwork
                                 Console.WriteLine(item);
                             }
 
-                            DateFilterList(events, input);
+                            return DateFilterList(events, input);
 
                         }
                         else
                         {
                             Console.WriteLine("try again");
+
+                           
                         }
                     }
+
+                    return new List<HelsinkiEvent>();
 
 
                 }
@@ -236,9 +242,9 @@ namespace W5_Projectwork
                 {
                     foreach (var item in listOfEvents)
                     {
-                        Console.WriteLine(item.name.fi + "\n");
-                        Console.WriteLine("Osoite: \n {0}", item.location);
-                        Console.WriteLine("Aikataulu: \n {0}", item.eventDates);
+                        Console.WriteLine(item.name.fi);
+                        Console.WriteLine("Osoite: \n {0}", item.location.address.streetAddress);
+                        Console.WriteLine("Aikataulu: \n {0} - {1}", item.eventDates.startingDay, item.eventDates.endingDay);
                         Console.WriteLine("Tapahtuman sivut: \n {0}", item.infoUrl);
                     }
 
