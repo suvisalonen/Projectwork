@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace W5_Projectwork
 {
@@ -11,7 +12,19 @@ namespace W5_Projectwork
             Console.WriteLine("Tervetuloa tapahtumahakuun");
 
             Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
+            Dictionary<string, string> EventTags = new Dictionary<string, string>();
+            EventTags.Add("1", "v1/events/?tags_search=Musiikki");
+            EventTags.Add("2", "v1/events/?tags_filter=Nuorille");
+            EventTags.Add("3", "v1/events/?tags_filter=shows");
+            var events = await Input.SearchWithTag("1", EventTags);
 
+
+            //olio-käyttäjän haulleg
+            //
+            //postinumero
+            //koordinaatit
+            //tagit
+            //päivämäärä
             Input.menuSelectionLogic();
 
             Input.askADate();
@@ -21,8 +34,10 @@ namespace W5_Projectwork
              
             Console.WriteLine();
 
+            Console.WriteLine(events);
 
-            //HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
+
+           //HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
 
             //Console.WriteLine(response.name.fi);
         }
@@ -36,8 +51,8 @@ namespace W5_Projectwork
             {
                
 
-                bool i = true;
-                while (i)
+                bool correctInputLoop = true;
+                while (correctInputLoop)
                 {
                     string input = Console.ReadLine();
 
@@ -45,115 +60,85 @@ namespace W5_Projectwork
                     {
 
                         //places
-                        i = false;
+                        correctInputLoop = false;
                     }
 
                     else if (input == "2")
                     {
-                        //Events
-                        Dictionary<string, string> EventTags = new Dictionary<string, string>();
-                        EventTags.Add("1", "v1/events/?tags_search=Musiikki");
-                        EventTags.Add("2", "v1/events/?tags_filter=Nuorille");
-                        EventTags.Add("3", "v1/events/?tags_filter=shows");
 
-                        Console.WriteLine("Millaisia tapahtumia haluat etsiä:");
-                        Console.WriteLine("1) Musiikkitapahtumat");
-                        Console.WriteLine("2) Nuorten tapahtumat");
-                        Console.WriteLine("3) Showt");
+                        menuEvents();
 
-                        bool a = true;
-                        while (a)
-                        {
-                            var tagInput = Console.ReadLine();
-
-                            if (EventTags.ContainsKey(tagInput))
-                            {
-                                chooseATag(tagInput, EventTags);
-                                a = false;
-
-                            }
-                            else
-                            {
-                                Console.WriteLine("Pahoittelut, valitsemaasi lukua ei löytynyt valikosta. Valitse uudelleen.");
-                                a = true;
-                            }
-                        }
-                        
-
-                        i = false;
+                        correctInputLoop = false;
                     }
                     else
                     {
-                        Console.WriteLine("ERROR!");
+                        Console.WriteLine("Please enter a correct input");
                     }
                 }
 
             }
 
-            public static void chooseATag(string tag, Dictionary<string, string> tagDictionary)
+            public static void menuEvents()
+            {
+                //Events
+                Dictionary<string, string> EventTags = new Dictionary<string, string>();
+                EventTags.Add("1", "v1/events/?tags_search=Musiikki");
+                EventTags.Add("2", "v1/events/?tags_filter=Nuorille");
+                EventTags.Add("3", "v1/events/?tags_filter=shows");
+
+                Console.WriteLine("Millaisia tapahtumia haluat etsiä:");
+                Console.WriteLine("1) Musiikkitapahtumat");
+                Console.WriteLine("2) Nuorten tapahtumat");
+                Console.WriteLine("3) Showt");
+
+                bool correctKeyLoop = true;
+                while (correctKeyLoop)
+                {
+                    var tagInput = Console.ReadLine();
+
+                    if (EventTags.ContainsKey(tagInput))
+                    {
+                        SearchWithTag(tagInput, EventTags);
+                        correctKeyLoop = false;
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Pahoittelut, valitsemaasi lukua ei löytynyt valikosta. Valitse uudelleen.");
+                    }
+                }
+            }
+
+            //Suvin tekemä metodi
+            public static async Task<List<HelsinkiEvent>> SearchWithTag(string tag, Dictionary<string, string> tagDictionary) 
             {
 
-                //tagDictionary[tag];
-                
+                var urlParams = tagDictionary[tag];
 
-                bool i = true;
-                while (i)
-                {
-                    string input = Console.ReadLine();
+                var events= await Rest.HelsinkiApiRestClient(urlParams);
+                //hakumetodi 
 
-                    if (input == "1")
-                    {
+                //hakutulosten tallennus listaan?
 
-                        //1
-                        i = false;
-                    }
-
-                    else if (input == "2")
-                    {
-                        //2
-                        i = false;
-                    }
-                    else if (input == "3")
-                    {
-                        //3
-                        i = false;
-                    }
-                    else
-                    {
-                        Console.WriteLine("ERROR!");
-                    }
-                }
-
-
-                
+                return events;
+               
             }
             //Ilari
-            public static List<Event> AskADate()
+            public static void AskADate()
             {
                 //kysy päivämäärää tai printtaa päivän mukaan
                 //
                 Console.WriteLine("Syötä haluamasi päivämäärä: ");
 
 
-                bool succes = false;
-                while (succes == false)
+                bool ParseSucces = false;
+                while (ParseSucces == false)
                 {
                     string userInput = Console.ReadLine();
-                    succes = DateTime.TryParse(userInput, out DateTime input);
-                    if (succes)
+                    ParseSucces = DateTime.TryParse(userInput, out DateTime input);
+                    if (ParseSucces)
                     {
-                        //käydään lista läpi ja haetaan päivämäärän mukaiset tapahtumat uuteen listaan
-
-                        List<string> FilteredList = new List<string>();
-
-                        foreach (var item in collection) //collection= list muuttuja joka tulee choose a tag metodista
-                        {
-                            if (item.startingDay > input > item.endingDay)
-                                FilteredList.Add(item);
-                            
-                        }
-
-
+                        DateFilterList();
                     }
                     else
                     {
@@ -161,10 +146,24 @@ namespace W5_Projectwork
                     }
                 }
 
-                return 
-
-
             }
+
+            //käydään lista läpi ja haetaan päivämäärän mukaiset tapahtumat uuteen listaan
+
+            public static Task<List<HelsinkiEvent>> DateFilterList()
+            {
+                Task<List<HelsinkiEvent>> FilteredList = new List<HelsinkiEvent>();
+
+                foreach (var item in collection) //collection= list muuttuja joka tulee choose a tag metodista
+                {
+                    if (item.startingDay >= input && item >= item.endingDay)
+                        FilteredList.Add(item);
+
+                    return FilteredList;
+                }
+            }
+
+
 
             public static void print()
             {
