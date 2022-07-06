@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using W5_Projectwork_Places;
 using System.Linq;
-using System.Globalization;
 
 namespace W5_Projectwork
 {
@@ -42,7 +41,8 @@ namespace W5_Projectwork
 
                     if (EventTags.ContainsKey(tagInput))
                     {
-                        await SearchWithTag(tagInput, EventTags);
+                        var answer = await SearchWithTag(tagInput, EventTags);
+                        PrintPlace(answer);
                         correctKeyLoop = false;
 
                     }
@@ -68,16 +68,16 @@ namespace W5_Projectwork
                 return placesList;
 
             }
-            public static void print(List<HelsinkiEvent> listOfEvents) //Roosan tekemä
+            public static void PrintPlace(List<Place> placesList) //Roosan tekemä
             {
-                foreach (var item in listOfEvents)
+                foreach (var item in placesList)
                 {
-                    Console.WriteLine(item.name.fi);
-                    Console.WriteLine("Osoite: \n {0}", item.location);
-                    Console.WriteLine("Aikataulu: \n {0}", item.eventDates);
-                    Console.WriteLine("Tapahtuman sivut: \n {0}", item.infoUrl);
+                    Console.WriteLine("\n" + item.name.fi);
+                    Console.WriteLine("Paikan kuvaus: \n {0}", item.description.intro);
+                    Console.WriteLine("Osoite: \n {0}", item.location.address.street_address);
+                    Console.WriteLine("Paikan sivut: \n {0} \n", item.info_url);
+               
                 }
-
             }
 
         }
@@ -148,7 +148,8 @@ namespace W5_Projectwork
 
                         if (EventTags.ContainsKey(tagInput))
                         {
-                            AskADate(await SearchWithTag(tagInput, EventTags));
+                            var answer = AskADate(await SearchWithTag(tagInput, EventTags));
+                            PrintEvent(answer);
                             correctKeyLoop = false;
 
                         }
@@ -194,7 +195,7 @@ namespace W5_Projectwork
                 
 
                 //Ilari
-                public static async Task AskADate(List<HelsinkiEvent> events)
+                public static List<HelsinkiEvent> AskADate(List<HelsinkiEvent> events)
                 {
 
 
@@ -211,20 +212,23 @@ namespace W5_Projectwork
                         ParseSucces = DateTime.TryParse(userInput, out DateTime input);
                         if (ParseSucces)
                         {
-                            //foreach (var item in DateFilterList(events, input))
-                            //{
-                            //    Console.WriteLine(item);
-                            //}
-                            //
-                            
-                            DateFilterList(events, input);
+                            foreach (var item in DateFilterList(events, input))
+                            {
+                                Console.WriteLine(item);
+                            }
+
+                            return DateFilterList(events, input);
 
                         }
                         else
                         {
                             Console.WriteLine("try again");
+
+                           
                         }
                     }
+
+                    return new List<HelsinkiEvent>();
 
 
                 }
@@ -251,13 +255,13 @@ namespace W5_Projectwork
 
 
 
-                public static void print(List<HelsinkiEvent> listOfEvents) //Roosan tekemä
+                public static void PrintEvent(List<HelsinkiEvent> listOfEvents) //Roosan tekemä
                 {
                     foreach (var item in listOfEvents)
                     {
                         Console.WriteLine(item.name.fi);
-                        Console.WriteLine("Osoite: \n {0}", item.location.address);
-                        Console.WriteLine("Aikataulu: \n {0}", item.eventDates);
+                        Console.WriteLine("Osoite: \n {0}", item.location.address.streetAddress);
+                        Console.WriteLine("Aikataulu: \n {0} - {1}", item.eventDates.startingDay, item.eventDates.endingDay);
                         Console.WriteLine("Tapahtuman sivut: \n {0}", item.infoUrl);
                     }
 
