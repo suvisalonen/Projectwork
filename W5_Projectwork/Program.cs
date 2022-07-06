@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+
 namespace W5_Projectwork
 {
     class Program
@@ -120,14 +121,14 @@ namespace W5_Projectwork
                     {
                         //käydään lista läpi ja haetaan päivämäärän mukaiset tapahtumat uuteen listaan
 
-                        List<string> FilteredList = new List<string>();
-
-                        foreach (var item in collection) //collection= list muuttuja joka tulee choose a tag metodista
-                        {
-                            if (item.startingDay > input > item.endingDay)
-                                FilteredList.Add(item);
-                        }
-
+                       // List<string> FilteredList = new List<string>();
+                       //
+                       // foreach (var item in Filted) //collection= list muuttuja joka tulee choose a tag metodista
+                       // {
+                       //     if (item.startingDay > input > item.endingDay)
+                       //         FilteredList.Add(item);
+                       // }
+                       //
 
                     }
                     else

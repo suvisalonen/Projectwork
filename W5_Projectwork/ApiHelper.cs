@@ -3,7 +3,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Text.Json;
+//using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace W5_Projectwork
 {
@@ -33,7 +34,8 @@ namespace W5_Projectwork
                         var json = await response.Content.ReadAsStringAsync();
 
                         // JSON to an object
-                        var result = JsonSerializer.Deserialize<T>(json);
+                        
+                        var result = JsonConvert.DeserializeObject<T>(json);
                         return result;
                     }
 

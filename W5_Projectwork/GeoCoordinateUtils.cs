@@ -11,9 +11,9 @@ namespace W5_Projectwork
 
         private static async Task<string> DigiTransitRestClient(string postalCode)
         {
-            const string DIGITRANSITRESTBASEURL = @"http://api.digitransit.fi/geocoding/v1/search";
+            const string DIGITRANSIT_REST_BASEURL = @"http://api.digitransit.fi/geocoding/v1/search";
             string queryParams = @$"?text={postalCode}&size=1";
-            string result = await ApiHelper.GetJSONAsync<string>(DIGITRANSITRESTBASEURL, queryParams);
+            string result = await ApiHelper.GetJSONAsync<string>(DIGITRANSIT_REST_BASEURL, queryParams);
             return result;
         }
 
@@ -34,7 +34,6 @@ namespace W5_Projectwork
                 {"lon", longitude}
             };
 
-                Console.WriteLine(postalCodeGeoCoordinates);
                 return postalCodeGeoCoordinates;
             }
 
