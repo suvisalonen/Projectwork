@@ -13,34 +13,13 @@ namespace W5_Projectwork
             Console.WriteLine("Tervetuloa tapahtumahakuun");
 
             Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
-            Dictionary<string, string> EventTags = new Dictionary<string, string>();
-            EventTags.Add("1", "v1/events/?tags_search=Musiikki");
-            EventTags.Add("2", "v1/events/?tags_filter=Nuorille");
-            EventTags.Add("3", "v1/events/?tags_filter=shows");
-            var events = await Input.SearchWithTag("1", EventTags);
-
-<<<<<<< HEAD
-            HelsinkiEvent response = await Rest.HelsinkiApiRestClient();
-           
-
-            ////testausta 
-            ///
-            List<HelsinkiEvent> eventti = new List<HelsinkiEvent>();
-            eventti.Add(response);
-
-            Input.print(eventti);
-
-            ///
-            Console.WriteLine(response.name.fi);
-
-=======
-
-            Console.WriteLine(events);
+            
+            
 
 
+            
 
-            //Console.WriteLine(response.name.fi);
->>>>>>> af98632884d52bfb7ac3fe5ac6eb2ccb5ddae19c
+
         }
 
 
@@ -125,7 +104,7 @@ namespace W5_Projectwork
                
             }
             //Ilari
-            public static void AskADate()
+            public static void AskADate<T>(List<T> list)
             {
                 //kysy päivämäärää tai printtaa päivän mukaan
                 //
