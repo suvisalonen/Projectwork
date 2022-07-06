@@ -10,11 +10,13 @@ namespace W5_Projectwork
         public string PostalCode { get; set; }
         public double lat { get; set; }
         public double lon { get; set; }
+        public double SearchRadius { get; set; }
         public string FilterTags { get; set; }
         public DateTime FilterDate { get; set; }
 
-        public HelsinkiEventDataTransferObject() 
-        { 
+        public HelsinkiEventDataTransferObject(double searcRadius = 5) 
+        {
+            this.SearchRadius = searcRadius;
         }
 
         public async Task UpdateCoordinates() 
