@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using W5_Projectwork_Places;
 
 namespace W5_Projectwork
 {
@@ -11,12 +12,12 @@ namespace W5_Projectwork
     {
 
 
-        public static async Task<List<HelsinkiEvent>> HelsinkiApiRestClient(string url)
+        public static async Task<HelsinkiPlaces> HelsinkiApiRestClient(string url)
         {
             string eventsUrl = "http://open-api.myhelsinki.fi/";
             string urlParams = url;
 
-            return await ApiHelper.RunAsync<List<HelsinkiEvent>>(eventsUrl, urlParams);
+            return await ApiHelper.RunAsync<HelsinkiPlaces>(eventsUrl, urlParams);
         }
         //public Place HelsinkiApiRestClient (string baseUrl, List<string> tagList)
         //{
