@@ -118,7 +118,7 @@ namespace W5_Projectwork
                     ParseSucces = DateTime.TryParse(userInput, out DateTime input);
                     if (ParseSucces)
                     {
-                        DateFilterList();
+                        DateFilterList(list, input);
                     }
                     else
                     {
@@ -129,12 +129,13 @@ namespace W5_Projectwork
             }
 
             //käydään lista läpi ja haetaan päivämäärän mukaiset tapahtumat uuteen listaan
-            public static Task<List<HelsinkiEvent>> DateFilterList() { 
-                        List<string> FilteredList = new List<string>();
+            public static List<HelsinkiEvent> DateFilterList(List<HelsinkiEvent> list, DateTime input) 
+            { 
+                        List<HelsinkiEvent> FilteredList = new List<HelsinkiEvent>();
                        
-                        foreach (var item in ) //collection= list muuttuja joka tulee choose a tag metodista
+                        foreach (var item in list) //collection= list muuttuja joka tulee choose a tag metodista
                         {
-                           if (item.startingDay > input > item.endingDay)
+                           if (item.eventDates.startingDay >= input && input >= item.eventDates.endingDay)
                                 FilteredList.Add(item);
                         }
                        
