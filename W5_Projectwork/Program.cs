@@ -13,6 +13,12 @@ namespace W5_Projectwork
             Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
 
             Input.menuSelectionLogic();
+
+            Input.askADate();
+            
+            Input.print();
+            
+             
             Console.WriteLine();
 
 
@@ -122,7 +128,7 @@ namespace W5_Projectwork
                 
             }
             //Ilari
-            public static void askADate()
+            public static List<Event> AskADate()
             {
                 //kysy päivämäärää tai printtaa päivän mukaan
                 //
@@ -144,6 +150,7 @@ namespace W5_Projectwork
                         {
                             if (item.startingDay > input > item.endingDay)
                                 FilteredList.Add(item);
+                            
                         }
 
 
@@ -154,6 +161,7 @@ namespace W5_Projectwork
                     }
                 }
 
+                return 
 
 
             }
