@@ -8,8 +8,8 @@ namespace W5_Projectwork
     class HelsinkiEventDataTransferObject
     {
         public string PostalCode { get; set; }
-        public double lat { get; set; }
-        public double lon { get; set; }
+        public string lat { get; set; }
+        public string lon { get; set; }
         public double SearchRadius { get; set; }
         public string FilterTags { get; set; }
         public DateTime FilterDate { get; set; }
@@ -21,7 +21,7 @@ namespace W5_Projectwork
 
         public async Task UpdateCoordinates() 
         {
-            Dictionary<string, double> coordinates = await GeoCoordinatesUtil.GetGeoCoordinatesAsync(PostalCode);
+            Dictionary<string, string> coordinates = await GeoCoordinatesUtil.GetGeoCoordinatesAsync(PostalCode);
 
             this.lat = coordinates["lat"];
             this.lon = coordinates["lon"];
