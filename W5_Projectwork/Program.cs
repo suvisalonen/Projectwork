@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using W5_Projectwork_Places;
 using System.Linq;
+using System.Threading.Tasks;
+using W5_Projectwork_Places;
 
 namespace W5_Projectwork
 {
@@ -76,7 +75,7 @@ namespace W5_Projectwork
                     Console.WriteLine("Paikan kuvaus: \n {0}", item.description.intro);
                     Console.WriteLine("Osoite: \n {0}", item.location.address.street_address);
                     Console.WriteLine("Paikan sivut: \n {0} \n", item.info_url);
-               
+
                 }
             }
 
@@ -122,10 +121,8 @@ namespace W5_Projectwork
                 public static async Task menuEvents()
                 {
                     //Events
-                    
-                    string postalcode = GetPostalcode();
 
-                    Dictionary<string, string> postalcodeCoordinates = await GeoCoordinatesUtil.GetGeoCoordinatesAsync(postalcode);
+                    Dictionary<string, string> postalcodeCoordinates = await GetPostalcodeCoordinatesAsync();
                     int searchRange = 5;
 
 
@@ -181,20 +178,37 @@ namespace W5_Projectwork
                 }
 
                 //Sampsa
-                public static string GetPostalcode()
+                public static async Task<Dictionary<string, string>> GetPostalcodeCoordinatesAsync()
                 {
+                    bool validPostalCodeInputted = false;
+                    Dictionary<string, string> postalcodeCoordinates = new Dictionary<string, string>();
+
                     Console.Clear();
-                    Console.WriteLine("Syötä postinumero");
-                    string userInputtedPostalcode = Console.ReadLine();
-                    while (!GeoCoordinatesUtil.IsValidPostalCode(userInputtedPostalcode)) 
+                    Console.WriteLine("Syötä postinumero:");
+                    
+
+                    while (!validPostalCodeInputted)
                     {
-                        Console.WriteLine("Syötä validi postikoodi");
-                        userInputtedPostalcode = Console.ReadLine();
+                        string userInputtedPostalcode = Console.ReadLine();
+
+                        if (GeoCoordinatesUtil.IsValidPostalCodeFormat(userInputtedPostalcode))
+                        {
+                            postalcodeCoordinates = await GeoCoordinatesUtil.GetGeoCoordinatesAsync(userInputtedPostalcode);
+                            if (!String.IsNullOrEmpty(postalcodeCoordinates["lat"]))
+                            {
+                                validPostalCodeInputted = true;
+                                
+                            }
+                        }
+                        if (!validPostalCodeInputted)
+                        {
+                        Console.WriteLine("Syötä olemassaoleva postinumero:");
+                        }
                     }
-                    return userInputtedPostalcode;
+                    return postalcodeCoordinates;
                 }
 
-                
+
 
                 //Ilari
                 public static List<HelsinkiEvent> AskADate(List<HelsinkiEvent> events)
@@ -231,7 +245,7 @@ namespace W5_Projectwork
                         {
                             Console.WriteLine("try again");
 
-                           
+
                         }
                     }
 
@@ -248,13 +262,13 @@ namespace W5_Projectwork
 
                     foreach (var item in events) //collection= list muuttuja joka tulee choose a tag metodista
                     {
-                        if (item.eventDates.startingDay >= input && input >= item.eventDates.endingDay)
+                        if (item.eventDates.startingDay >= input && input.AddDays(90) >= item.eventDates.startingDay)
                             FilteredList.Add(item);
                         else if (input == null)
                             Console.WriteLine("Ei tapahtumia");
                     }
 
-
+                    FilteredList.Sort((date1, date2) => DateTime.Compare(date1.eventDates.startingDay, date2.eventDates.startingDay));
 
                     return FilteredList;
 
@@ -286,7 +300,7 @@ namespace W5_Projectwork
                             while (Console.ReadKey().Key != ConsoleKey.Enter) { };
                             Console.Clear();
                         }
-                    
+
                     }
 
 
