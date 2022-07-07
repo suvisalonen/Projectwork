@@ -24,11 +24,17 @@ namespace W5_Projectwork
             {
                 string latitude = "";
                 string longitude = "";
+                string geoJSON = await GeoCoordinatesUtil.DigiTransitRestClient(postalCode);
+
+                if (geoJSON == default(string))
+                {
+                    throw new InvalidOperationException("Serveri ongelma");
+                }
+
                 try
                 {
-                    string geoJSON = await GeoCoordinatesUtil.DigiTransitRestClient(postalCode);
-                    dynamic result = JsonConvert.DeserializeObject<dynamic>(geoJSON);
 
+                    dynamic result = JsonConvert.DeserializeObject<dynamic>(geoJSON);
 
                     if (result.features.Count != 0)
                     {
@@ -48,10 +54,10 @@ namespace W5_Projectwork
                 }
 
                 Dictionary<string, string> postalCodeGeoCoordinates = new Dictionary<string, string>
-            {
-                {"lat", latitude},
-                {"lon", longitude}
-            };
+                    {
+                        {"lat", latitude},
+                        {"lon", longitude}
+                    };
 
                 return postalCodeGeoCoordinates;
             }

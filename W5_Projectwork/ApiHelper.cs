@@ -64,8 +64,10 @@ namespace W5_Projectwork
                         var json = await response.Content.ReadAsStringAsync();
                         return json;
                     }
-
-                    return default(string);
+                    else
+                    {
+                        return default(string);
+                    }
                 }
             }
             catch (Exception e)

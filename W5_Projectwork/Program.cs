@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using W5_Projectwork_Places;
 using System.Linq;
+using System.Threading.Tasks;
+using W5_Projectwork_Places;
 
 namespace W5_Projectwork
 {
@@ -11,7 +10,7 @@ namespace W5_Projectwork
     {
         static async Task Main(string[] args)
         {
-            
+
             await Input.menuSelectionLogic();
 
         }
@@ -36,7 +35,7 @@ namespace W5_Projectwork
                 EventTags.Add("2", "v2/places/?tags_filter=Pub");
                 EventTags.Add("3", "v2/places/?tags_filter=Park");
 
-                
+
                 Console.WriteLine("Millaisia paikkoja haluat etsiä:");
                 Console.WriteLine("1) Ravintolat");
                 Console.WriteLine("2) Pubit");
@@ -76,7 +75,7 @@ namespace W5_Projectwork
                 return placesList;
 
             }
-            public static void PrintPlace(List<Place> placesList) 
+            public static void PrintPlace(List<Place> placesList)
             {
 
                 Console.Clear();
@@ -87,7 +86,7 @@ namespace W5_Projectwork
                     Console.WriteLine("");
                     Console.WriteLine("---- " + item.name.fi + " ----\n");
                     Console.WriteLine("Paikan kuvaus: \n {0} \n", item.description.intro);
-                    Console.WriteLine("Osoite: \n {0} \n", item.location.address.street_address);                
+                    Console.WriteLine("Osoite: \n {0} \n", item.location.address.street_address);
                     Console.WriteLine("Paikan sivut: \n {0}\n ", item.info_url);
                     Console.WriteLine("--------------------------------------------------");
 
@@ -124,7 +123,7 @@ namespace W5_Projectwork
 
                     if (input == "1")
                     {
-                        
+
                         await Places.menuPlaces();
                         correctInputLoop = true;
                     }
@@ -163,7 +162,7 @@ namespace W5_Projectwork
                     EventTags.Add("1", $"v1/events/?tags_search=Musiikki&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
                     EventTags.Add("2", $"v1/events/?tags_filter=Nuorille&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
                     EventTags.Add("3", $"v1/events/?tags_filter=shows&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
-                    
+
 
                     Console.WriteLine("Millaisia tapahtumia haluat etsiä:");
                     Console.WriteLine("1) Musiikkitapahtumat");
@@ -201,9 +200,9 @@ namespace W5_Projectwork
                     //hakutulosten tallennus listaan?
 
                     var events = await Rest.HelsinkiApiRestClientV2(urlParams);
-                    
 
-                    
+
+
 
 
                     return events;
@@ -218,30 +217,39 @@ namespace W5_Projectwork
 
                     Console.Clear();
                     Console.WriteLine("Syötä postinumero:");
-                    
+
 
                     while (!validPostalCodeInputted)
                     {
                         string userInputtedPostalcode = Console.ReadLine();
 
-                        if (GeoCoordinatesUtil.IsValidPostalCodeFormat(userInputtedPostalcode))
+                        try
                         {
                             postalcodeCoordinates = await GeoCoordinatesUtil.GetGeoCoordinatesAsync(userInputtedPostalcode);
-                            if (!String.IsNullOrEmpty(postalcodeCoordinates["lat"]))
-                            {
-                                validPostalCodeInputted = true;
-                                
-                            }
                         }
+
+                        catch (InvalidOperationException)
+                        {
+                            Console.WriteLine("Ongelma serveriyhteydessä, yritä uudelleen");
+                        }
+                        catch (ArgumentException)
+                        {
+                            Console.WriteLine("Syötä postinumero oikeassa muodossa.");
+                        }
+
+                        if (postalcodeCoordinates.ContainsKey("lat") && !String.IsNullOrEmpty(postalcodeCoordinates["lat"]))
+                        {
+                            validPostalCodeInputted = true;
+                        }
+
+
                         if (!validPostalCodeInputted)
                         {
-                        Console.WriteLine("Syötä olemassaoleva postinumero:");
+                            Console.WriteLine("Syötä olemassaoleva postinumero:");
                         }
                     }
                     return postalcodeCoordinates;
                 }
-
-
 
                 //Ilari
                 public static List<HelsinkiEvent> AskADate(List<HelsinkiEvent> events)
@@ -297,8 +305,8 @@ namespace W5_Projectwork
                     Console.WriteLine("1) juuri haetulle päivälle");
                     Console.WriteLine("2) haetusta päivästä 3kk eteenpäin");
 
-                    string switchinput ="";
-                    while (switchinput != "1" && switchinput!= "2")
+                    string switchinput = "";
+                    while (switchinput != "1" && switchinput != "2")
                     {
                         switchinput = Console.ReadLine();
                         switch (switchinput)
@@ -306,7 +314,7 @@ namespace W5_Projectwork
 
                             case "1": //Ilari
 
-                                foreach (var item in events) 
+                                foreach (var item in events)
                                 {
                                     if (item.eventDates.endingDay >= input && input.AddDays(1) >= item.eventDates.startingDay)
                                         FilteredList.Add(item);
@@ -319,8 +327,8 @@ namespace W5_Projectwork
                                 {
                                     if (item.eventDates.startingDay >= input && input.AddDays(90) >= item.eventDates.startingDay)
                                         FilteredList.Add(item);
-                                    
-                                    
+
+
                                 }
                                 FilteredList.Sort((date1, date2) => DateTime.Compare(date1.eventDates.startingDay, date2.eventDates.startingDay));
 
@@ -328,7 +336,7 @@ namespace W5_Projectwork
 
                             default:
                                 Console.WriteLine("Virheellinen valinta");
-                               
+
                                 break;
                         }
 
@@ -344,16 +352,16 @@ namespace W5_Projectwork
                 {
                     if (listOfEvents.Count == 0)
                     {
-                       Console.WriteLine("Tapahtumia ei löytynyt. Paina enter palataksesi menuun \n");
+                        Console.WriteLine("Tapahtumia ei löytynyt. Paina enter palataksesi menuun \n");
                         Console.ReadLine();
                         Console.Clear();
                     }
-                   
+
                 }
 
-                public static void PrintEvent(List<HelsinkiEvent> listOfEvents) 
+                public static void PrintEvent(List<HelsinkiEvent> listOfEvents)
                 {
-                    
+
                     Console.Clear();
                     CheckListEmpty(listOfEvents);
                     int consoleWindowHeight = Console.WindowHeight;
