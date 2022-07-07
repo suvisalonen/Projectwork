@@ -11,7 +11,7 @@ namespace W5_Projectwork
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("Tervetuloa tapahtumahakuun! Täällä voit hakea vapaa-ajanviettoon soveltuvia paikkoja tai tapahtumia.\n");
+            
             await Input.menuSelectionLogic();
 
         }
@@ -36,6 +36,7 @@ namespace W5_Projectwork
                 EventTags.Add("2", "v2/places/?tags_filter=Pub");
                 EventTags.Add("3", "v2/places/?tags_filter=Park");
 
+                
                 Console.WriteLine("Millaisia paikkoja haluat etsiä:");
                 Console.WriteLine("1) Ravintolat");
                 Console.WriteLine("2) Pubit");
@@ -114,6 +115,7 @@ namespace W5_Projectwork
                 while (correctInputLoop)
                 {
                     Console.Clear();
+                    Console.WriteLine("Tervetuloa tapahtumahakuun! Täällä voit hakea vapaa-ajanviettoon soveltuvia paikkoja tai tapahtumia.\n");
                     Console.WriteLine("Mitä haluat tehdä?\n");
                     Console.WriteLine("1) Hae paikkoja");
                     Console.WriteLine("2) Hae tapahtumia");
