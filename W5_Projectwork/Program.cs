@@ -256,19 +256,61 @@ namespace W5_Projectwork
                 {
                     List<HelsinkiEvent> FilteredList = new List<HelsinkiEvent>();
 
-                    foreach (var item in events) //collection= list muuttuja joka tulee choose a tag metodista
+                    Console.WriteLine("Listataanko tapahtumat:");
+                    Console.WriteLine("1) juuri haetulle päivälle");
+                    Console.WriteLine("2) haetusta päivästä 3kk eteenpäin");
+
+                    string switchinput ="3";
+                    while (switchinput != "1" && switchinput!= "2")
                     {
-                        if (item.eventDates.startingDay >= input && input >= item.eventDates.endingDay)
-                            FilteredList.Add(item);
-                        else if (input == null)
-                            Console.WriteLine("Ei tapahtumia");
+                        switchinput = Console.ReadLine();
+                        switch (switchinput)
+                        {
+
+                            case "1":
+
+                                foreach (var item in events) //collection= list muuttuja joka tulee choose a tag metodista
+                                {
+                                    if (item.eventDates.startingDay >= input && input >= item.eventDates.endingDay)
+                                        FilteredList.Add(item);
+                                    else if (input == null)
+                                        Console.WriteLine("Ei tapahtumia");
+                                    
+                                }
+
+                                break;
+
+                            case "2":
+                                foreach (var item in events) //collection= list muuttuja joka tulee choose a tag metodista
+                                {
+                                    if (item.eventDates.startingDay >= input && input.AddDays(90) >= item.eventDates.startingDay)
+                                        FilteredList.Add(item);
+                                    else if (input == null)
+                                        Console.WriteLine("Ei tapahtumia");
+                                    
+                                }
+                                FilteredList.Sort((date1, date2) => DateTime.Compare(date1.eventDates.startingDay, date2.eventDates.startingDay));
+                                
+                             
+                                break;
+                                
+                            
+                            default:
+                                Console.WriteLine("Virheellinen valinta");
+                               
+                                break;
+                        }
+
+
                     }
-
-
-
                     return FilteredList;
 
+
                 }
+
+
+
+
 
 
 
