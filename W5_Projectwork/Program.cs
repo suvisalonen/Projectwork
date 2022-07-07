@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using W5_Projectwork_Places;
+using System.Linq;
 
 namespace W5_Projectwork
 {
@@ -10,7 +11,7 @@ namespace W5_Projectwork
     {
         static async Task Main(string[] args)
         {
-
+            
             await Input.menuSelectionLogic();
 
         }
@@ -70,7 +71,7 @@ namespace W5_Projectwork
                 List<Place> placesList = places.data.ToList();
                 //hakumetodi 
 
-                //hakutulosten tallennus listaan?
+                //hakutulosten tallennus listaan
 
                 return placesList;
 
@@ -141,7 +142,8 @@ namespace W5_Projectwork
                     }
                     else
                     {
-                        Console.WriteLine("Syötä valikossa oleva luku");
+                        Console.WriteLine("Pahoittelut, lukua ei löytynyt");
+                        Console.ReadLine();
                         correctInputLoop = true;
                     }
                 }
@@ -284,7 +286,7 @@ namespace W5_Projectwork
                         }
                         else
                         {
-                            Console.WriteLine("try again");
+                            Console.WriteLine("koita uudelleen");
 
 
                         }
@@ -386,8 +388,11 @@ namespace W5_Projectwork
                             while (Console.ReadKey().Key != ConsoleKey.Enter) { };
                             Console.Clear();
                         }
+                        
 
                     }
+
+                    Console.ReadLine();
 
 
                 }
