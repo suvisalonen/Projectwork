@@ -70,13 +70,26 @@ namespace W5_Projectwork
             }
             public static void PrintPlace(List<Place> placesList) //Roosan tekemä
             {
+
+                Console.Clear();
+                int consoleWindowHeight = Console.WindowHeight;
                 foreach (var item in placesList)
                 {
-                    Console.WriteLine("\n" + item.name.fi);
-                    Console.WriteLine("Paikan kuvaus: \n {0}", item.description.intro);
+
+                    Console.WriteLine("");
+                    Console.WriteLine(item.name.fi);
                     Console.WriteLine("Osoite: \n {0}", item.location.address.street_address);
-                    Console.WriteLine("Paikan sivut: \n {0} \n", item.info_url);
-               
+                    Console.WriteLine("Paikan kuvaus: \n {0}", item.description.intro);
+                    Console.WriteLine("Tapahtuman sivut: \n {0}", item.info_url);
+                    Console.WriteLine("--------------------------------------------------");
+
+                    if (Console.CursorTop + 5 > consoleWindowHeight)
+                    {
+                        Console.Write("Seuraavalle sivulle enterillä");
+                        while (Console.ReadKey().Key != ConsoleKey.Enter) { };
+                        Console.Clear();
+                    }
+
                 }
             }
 
