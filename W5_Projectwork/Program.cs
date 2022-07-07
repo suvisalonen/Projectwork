@@ -285,7 +285,7 @@ namespace W5_Projectwork
 
                 }
 
-
+                //Ilari
                 //käydään lista läpi ja haetaan päivämäärän mukaiset tapahtumat uuteen listaan
                 public static List<HelsinkiEvent> DateFilterList(List<HelsinkiEvent> events, DateTime input)
                 {
@@ -302,9 +302,9 @@ namespace W5_Projectwork
                         switch (switchinput)
                         {
 
-                            case "1":
+                            case "1": //Ilari
 
-                                foreach (var item in events) //collection= list muuttuja joka tulee choose a tag metodista
+                                foreach (var item in events) 
                                 {
                                     if (item.eventDates.endingDay >= input && input.AddDays(1) >= item.eventDates.startingDay)
                                         FilteredList.Add(item);
@@ -313,7 +313,7 @@ namespace W5_Projectwork
                                 break;
 
                             case "2":
-                                foreach (var item in events) //collection= list muuttuja joka tulee choose a tag metodista
+                                foreach (var item in events) //Sampsa
                                 {
                                     if (item.eventDates.startingDay >= input && input.AddDays(90) >= item.eventDates.startingDay)
                                         FilteredList.Add(item);
