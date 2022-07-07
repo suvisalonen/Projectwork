@@ -113,7 +113,7 @@ namespace W5_Projectwork
                 bool correctInputLoop = true;
                 while (correctInputLoop)
                 {
-                    
+                    Console.Clear();
                     Console.WriteLine("Mitä haluat tehdä?\n");
                     Console.WriteLine("1) Hae paikkoja");
                     Console.WriteLine("2) Hae tapahtumia");
