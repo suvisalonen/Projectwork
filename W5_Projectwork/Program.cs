@@ -309,12 +309,6 @@ namespace W5_Projectwork
                                 {
                                     if (item.eventDates.endingDay >= input && input.AddDays(1) >= item.eventDates.startingDay)
                                         FilteredList.Add(item);
-<<<<<<< HEAD
-=======
-                                    
->>>>>>> ac0133857cbc0f492891876cc02cb6d28e1949e9
-                                    
-
                                 }
 
                                 break;
