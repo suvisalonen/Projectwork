@@ -317,8 +317,7 @@ namespace W5_Projectwork
                                 {
                                     if (item.eventDates.startingDay >= input && input.AddDays(90) >= item.eventDates.startingDay)
                                         FilteredList.Add(item);
-                                    else if (input == null)
-                                        Console.WriteLine("Ei tapahtumia");
+                                    
                                     
                                 }
                                 FilteredList.Sort((date1, date2) => DateTime.Compare(date1.eventDates.startingDay, date2.eventDates.startingDay));
