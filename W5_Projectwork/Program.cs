@@ -36,6 +36,7 @@ namespace W5_Projectwork
                 EventTags.Add("2", "v2/places/?tags_filter=Pub");
                 EventTags.Add("3", "v2/places/?tags_filter=Park");
 
+                
                 Console.WriteLine("Millaisia paikkoja haluat etsiä:");
                 Console.WriteLine("1) Ravintolat");
                 Console.WriteLine("2) Pubit");

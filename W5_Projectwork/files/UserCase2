@@ -1,0 +1,29 @@
+@startuml
+title UC2 Get places to go
+actor User as user
+boundary ConsoleUI as ui
+control InputLogic as input
+
+database HelsinkiAPI as hkiapi
+
+ui --> user: Display Welcome msg\n& instructions
+user -> input: Select \n"List Places to go" UC
+
+
+
+
+ui --> user: Show list of tags
+user -> input: Select filter tag
+input -> input: Validate\nselection
+
+
+
+input -> hkiapi: Request list of events
+note right: GET http://open-api.myhelsinki.fi/v1/events/?\ntags_search={tag}&distance_filter={lat},{lon},{range}
+activate hkiapi
+hkiapi --> input: HTTP 200 OK
+deactivate hkiapi
+
+ui --> user: Print 
+
+@enduml
