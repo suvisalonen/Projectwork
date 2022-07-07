@@ -24,6 +24,16 @@ namespace W5_Projectwork
 
         }
 
+        public class EventHaku
+        {
+            public int MyProperty { get; set; }
+
+        }
+        public class PlaceHaku
+        {
+
+        }
+
         public class Places
         {
             public static async Task menuPlaces()
@@ -102,7 +112,7 @@ namespace W5_Projectwork
 
                     if (input == "1")
                     {
-
+                        
                         await Places.menuPlaces();
                         correctInputLoop = false;
                     }
