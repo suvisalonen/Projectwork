@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using W5_Projectwork_Places;
+using System.Linq;
 
 namespace W5_Projectwork
 {
@@ -10,11 +11,18 @@ namespace W5_Projectwork
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("Tervetuloa tapahtumahakuun");
-
-            Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
-
+            Console.WriteLine("Tervetuloa tapahtumahakuun! Täällä voit hakea vapaa-ajanviettoon soveltuvia paikkoja tai tapahtumia.\n");
             await Input.menuSelectionLogic();
+
+        }
+
+        public class EventHaku
+        {
+            public int MyProperty { get; set; }
+
+        }
+        public class PlaceHaku
+        {
 
         }
 
@@ -25,10 +33,10 @@ namespace W5_Projectwork
                 //Places
                 Dictionary<string, string> EventTags = new Dictionary<string, string>();
                 EventTags.Add("1", "v2/places/?tags_filter=restaurants");
-                EventTags.Add("2", "v2/places/?tags_filter=pubs");
-                EventTags.Add("3", "v2/places/?tags_filter=parks");
+                EventTags.Add("2", "v2/places/?tags_filter=Pub");
+                EventTags.Add("3", "v2/places/?tags_filter=Park");
 
-                Console.WriteLine("Millaisia tapahtumia haluat etsiä:");
+                Console.WriteLine("Millaisia paikkoja haluat etsiä:");
                 Console.WriteLine("1) Ravintolat");
                 Console.WriteLine("2) Pubit");
                 Console.WriteLine("3) Puistot");
@@ -69,12 +77,25 @@ namespace W5_Projectwork
             }
             public static void PrintPlace(List<Place> placesList) //Roosan tekemä
             {
+
+                Console.Clear();
+                int consoleWindowHeight = Console.WindowHeight;
                 foreach (var item in placesList)
                 {
-                    Console.WriteLine("\n" + item.name.fi);
-                    Console.WriteLine("Paikan kuvaus: \n {0}", item.description.intro);
-                    Console.WriteLine("Osoite: \n {0}", item.location.address.street_address);
-                    Console.WriteLine("Paikan sivut: \n {0} \n", item.info_url);
+
+                    Console.WriteLine("");
+                    Console.WriteLine("---- " + item.name.fi + " ----\n");
+                    Console.WriteLine("Paikan kuvaus: \n {0} \n", item.description.intro);
+                    Console.WriteLine("Osoite: \n {0} \n", item.location.address.street_address);                
+                    Console.WriteLine("Tapahtuman sivut: \n {0}\n ", item.info_url);
+                    Console.WriteLine("--------------------------------------------------");
+
+                    if (Console.CursorTop + 5 > consoleWindowHeight)
+                    {
+                        Console.Write("Seuraavalle sivulle enterillä");
+                        while (Console.ReadKey().Key != ConsoleKey.Enter) { };
+                        Console.Clear();
+                    }
 
                 }
             }
@@ -92,13 +113,18 @@ namespace W5_Projectwork
                 bool correctInputLoop = true;
                 while (correctInputLoop)
                 {
+                    
+                    Console.WriteLine("Mitä haluat tehdä?\n");
+                    Console.WriteLine("1) Hae paikkoja");
+                    Console.WriteLine("2) Hae tapahtumia");
+                    Console.WriteLine("3) Lopeta");
                     string input = Console.ReadLine();
 
                     if (input == "1")
                     {
-
+                        
                         await Places.menuPlaces();
-                        correctInputLoop = false;
+                        correctInputLoop = true;
                     }
 
                     else if (input == "2")
@@ -106,11 +132,16 @@ namespace W5_Projectwork
 
                         await Events.menuEvents();
 
+                        correctInputLoop = true;
+                    }
+                    else if (input == "3")
+                    {
                         correctInputLoop = false;
                     }
                     else
                     {
-                        Console.WriteLine("Please enter a correct input");
+                        Console.WriteLine("Syötä valikossa oleva luku");
+                        correctInputLoop = true;
                     }
                 }
 
@@ -164,13 +195,14 @@ namespace W5_Projectwork
                 public static async Task<List<HelsinkiEvent>> SearchWithTag(string tag,
                     Dictionary<string, string> tagDictionary)
                 {
-
+                    //hakumetodi 
                     var urlParams = tagDictionary[tag];
+                    //hakutulosten tallennus listaan?
 
                     var events = await Rest.HelsinkiApiRestClientV2(urlParams);
-                    //hakumetodi 
+                    
 
-                    //hakutulosten tallennus listaan?
+                    
 
 
                     return events;
@@ -260,19 +292,61 @@ namespace W5_Projectwork
                 {
                     List<HelsinkiEvent> FilteredList = new List<HelsinkiEvent>();
 
-                    foreach (var item in events) //collection= list muuttuja joka tulee choose a tag metodista
+                    Console.WriteLine("Listataanko tapahtumat:");
+                    Console.WriteLine("1) juuri haetulle päivälle");
+                    Console.WriteLine("2) haetusta päivästä 3kk eteenpäin");
+
+                    string switchinput ="3";
+                    while (switchinput != "1" && switchinput!= "2")
                     {
-                        if (item.eventDates.startingDay >= input && input.AddDays(90) >= item.eventDates.startingDay)
-                            FilteredList.Add(item);
-                        else if (input == null)
-                            Console.WriteLine("Ei tapahtumia");
+                        switchinput = Console.ReadLine();
+                        switch (switchinput)
+                        {
+
+                            case "1":
+
+                                foreach (var item in events) //collection= list muuttuja joka tulee choose a tag metodista
+                                {
+                                    if (item.eventDates.startingDay >= input && input >= item.eventDates.endingDay)
+                                        FilteredList.Add(item);
+                                    else if (input == null)
+                                        Console.WriteLine("Ei tapahtumia");
+                                    
+                                }
+
+                                break;
+
+                            case "2":
+                                foreach (var item in events) //collection= list muuttuja joka tulee choose a tag metodista
+                                {
+                                    if (item.eventDates.startingDay >= input && input.AddDays(90) >= item.eventDates.startingDay)
+                                        FilteredList.Add(item);
+                                    else if (input == null)
+                                        Console.WriteLine("Ei tapahtumia");
+                                    
+                                }
+                                FilteredList.Sort((date1, date2) => DateTime.Compare(date1.eventDates.startingDay, date2.eventDates.startingDay));
+                                
+                             
+                                break;
+                                
+                            
+                            default:
+                                Console.WriteLine("Virheellinen valinta");
+                               
+                                break;
+                        }
+
+
                     }
-
-                    FilteredList.Sort((date1, date2) => DateTime.Compare(date1.eventDates.startingDay, date2.eventDates.startingDay));
-
                     return FilteredList;
 
+
                 }
+
+
+
+
 
 
 
@@ -288,10 +362,10 @@ namespace W5_Projectwork
                             endingDateText = "->";
                         }
                         Console.WriteLine("");
-                        Console.WriteLine(item.name.fi);
-                        Console.WriteLine("Osoite: \n {0}", item.location.address.streetAddress);
-                        Console.WriteLine("Aikataulu: \n {0} - {1}", item.eventDates.startingDay, endingDateText);
-                        Console.WriteLine("Tapahtuman sivut: \n {0}", item.infoUrl);
+                        Console.WriteLine("---- " + item.name.fi + " ----\n");
+                        Console.WriteLine("Osoite: \n {0} \n", item.location.address.streetAddress);
+                        Console.WriteLine("Aikataulu: \n {0} - {1} \n", item.eventDates.startingDay, endingDateText);
+                        Console.WriteLine("Tapahtuman sivut: \n {0} \n", item.infoUrl);
                         Console.WriteLine("--------------------------------------------------");
 
                         if (Console.CursorTop + 5 > consoleWindowHeight)
