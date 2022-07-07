@@ -11,10 +11,7 @@ namespace W5_Projectwork
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("Tervetuloa tapahtumahakuun");
-
-            Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
-
+            Console.WriteLine("Tervetuloa tapahtumahakuun! Täällä voit hakea vapaa-ajanviettoon soveltuvia paikkoja tai tapahtumia.\n");
             await Input.menuSelectionLogic();
 
         }
@@ -39,7 +36,7 @@ namespace W5_Projectwork
                 EventTags.Add("2", "v2/places/?tags_filter=Pub");
                 EventTags.Add("3", "v2/places/?tags_filter=Park");
 
-                Console.WriteLine("Millaisia tapahtumia haluat etsiä:");
+                Console.WriteLine("Millaisia paikkoja haluat etsiä:");
                 Console.WriteLine("1) Ravintolat");
                 Console.WriteLine("2) Pubit");
                 Console.WriteLine("3) Puistot");
@@ -103,13 +100,18 @@ namespace W5_Projectwork
                 bool correctInputLoop = true;
                 while (correctInputLoop)
                 {
+                    
+                    Console.WriteLine("Mitä haluat tehdä?\n");
+                    Console.WriteLine("1) Hae paikkoja");
+                    Console.WriteLine("2) Hae tapahtumia");
+                    Console.WriteLine("3) Lopeta");
                     string input = Console.ReadLine();
 
                     if (input == "1")
                     {
                         
                         await Places.menuPlaces();
-                        correctInputLoop = false;
+                        correctInputLoop = true;
                     }
 
                     else if (input == "2")
@@ -117,11 +119,16 @@ namespace W5_Projectwork
 
                         await Events.menuEvents();
 
+                        correctInputLoop = true;
+                    }
+                    else if (input == "3")
+                    {
                         correctInputLoop = false;
                     }
                     else
                     {
-                        Console.WriteLine("Please enter a correct input");
+                        Console.WriteLine("Syötä valikossa oleva luku");
+                        correctInputLoop = true;
                     }
                 }
 
@@ -143,10 +150,8 @@ namespace W5_Projectwork
                     EventTags.Add("1", $"v1/events/?tags_search=Musiikki&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
                     EventTags.Add("2", $"v1/events/?tags_filter=Nuorille&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
                     EventTags.Add("3", $"v1/events/?tags_filter=shows&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
-
-                    Console.WriteLine(EventTags["1"]);
-
-                    Console.WriteLine("Millaisia tapahtumia haluat etsiä:");
+                    
+                    Console.WriteLine("\nMillaisia tapahtumia haluat etsiä:");
                     Console.WriteLine("1) Musiikkitapahtumat");
                     Console.WriteLine("2) Nuorten tapahtumat");
                     Console.WriteLine("3) Showt");
@@ -177,13 +182,14 @@ namespace W5_Projectwork
                 public static async Task<List<HelsinkiEvent>> SearchWithTag(string tag,
                     Dictionary<string, string> tagDictionary)
                 {
-
+                    //hakumetodi 
                     var urlParams = tagDictionary[tag];
+                    //hakutulosten tallennus listaan?
 
                     var events = await Rest.HelsinkiApiRestClientV2(urlParams);
-                    //hakumetodi 
+                    
 
-                    //hakutulosten tallennus listaan?
+                    
 
 
                     return events;
