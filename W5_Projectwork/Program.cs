@@ -11,7 +11,7 @@ namespace W5_Projectwork
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("Tervetuloa tapahtumahakuun! Täällä voit hakea vapaa-ajanviettoon soveltuvia paikkoja tai tapahtumia.\n");
+           
             await Input.menuSelectionLogic();
 
         }
@@ -70,7 +70,7 @@ namespace W5_Projectwork
                 List<Place> placesList = places.data.ToList();
                 //hakumetodi 
 
-                //hakutulosten tallennus listaan?
+                //hakutulosten tallennus listaan
 
                 return placesList;
 
@@ -114,6 +114,7 @@ namespace W5_Projectwork
                 while (correctInputLoop)
                 {
                     Console.Clear();
+                    Console.WriteLine("Tervetuloa tapahtumahakuun! Täällä voit hakea vapaa-ajanviettoon soveltuvia paikkoja tai tapahtumia.\n");
                     Console.WriteLine("Mitä haluat tehdä?\n");
                     Console.WriteLine("1) Hae paikkoja");
                     Console.WriteLine("2) Hae tapahtumia");
@@ -140,7 +141,8 @@ namespace W5_Projectwork
                     }
                     else
                     {
-                        Console.WriteLine("Syötä valikossa oleva luku");
+                        Console.WriteLine("Pahoittelut, lukua ei löytynyt");
+                        Console.ReadLine();
                         correctInputLoop = true;
                     }
                 }
@@ -274,7 +276,7 @@ namespace W5_Projectwork
                         }
                         else
                         {
-                            Console.WriteLine("try again");
+                            Console.WriteLine("koita uudelleen");
 
 
                         }
@@ -376,8 +378,11 @@ namespace W5_Projectwork
                             while (Console.ReadKey().Key != ConsoleKey.Enter) { };
                             Console.Clear();
                         }
+                        
 
                     }
+
+                    Console.ReadLine();
 
 
                 }
