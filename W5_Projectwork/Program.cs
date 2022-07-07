@@ -75,19 +75,19 @@ namespace W5_Projectwork
                 return placesList;
 
             }
-            public static void PrintPlace(List<Place> placesList) //Roosan tekemä
+            public static void PrintPlace(List<Place> placesList) 
             {
 
                 Console.Clear();
                 int consoleWindowHeight = Console.WindowHeight;
                 foreach (var item in placesList)
                 {
-
+                    //Roosan tekemä tulostus
                     Console.WriteLine("");
                     Console.WriteLine("---- " + item.name.fi + " ----\n");
                     Console.WriteLine("Paikan kuvaus: \n {0} \n", item.description.intro);
                     Console.WriteLine("Osoite: \n {0} \n", item.location.address.street_address);                
-                    Console.WriteLine("Tapahtuman sivut: \n {0}\n ", item.info_url);
+                    Console.WriteLine("Paikan sivut: \n {0}\n ", item.info_url);
                     Console.WriteLine("--------------------------------------------------");
 
                     if (Console.CursorTop + 5 > consoleWindowHeight)
@@ -349,7 +349,7 @@ namespace W5_Projectwork
                    
                 }
 
-                public static void PrintEvent(List<HelsinkiEvent> listOfEvents) //Roosan tekemä
+                public static void PrintEvent(List<HelsinkiEvent> listOfEvents) 
                 {
                     
                     Console.Clear();
@@ -362,6 +362,7 @@ namespace W5_Projectwork
                         {
                             endingDateText = "->";
                         }
+                        //Roosan tekemä tulostus
                         Console.WriteLine("");
                         Console.WriteLine("---- " + item.name.fi + " ----\n");
                         Console.WriteLine("Osoite: \n {0} \n", item.location.address.streetAddress);
