@@ -283,8 +283,6 @@ namespace W5_Projectwork
                             Console.WriteLine("Ei tapahtumia");
                     }
 
-
-
                     return FilteredList;
 
                 }
