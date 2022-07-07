@@ -20,13 +20,32 @@ namespace W5_Projectwork
         public static async Task<Dictionary<string, string>> GetGeoCoordinatesAsync(string postalCode)
         {
 
-            if (IsValidPostalCode(postalCode))
+            if (IsValidPostalCodeFormat(postalCode))
             {
-                string geoJSON = await GeoCoordinatesUtil.DigiTransitRestClient(postalCode);
+                string latitude = "";
+                string longitude = "";
+                try
+                {
+                    string geoJSON = await GeoCoordinatesUtil.DigiTransitRestClient(postalCode);
+                    dynamic result = JsonConvert.DeserializeObject<dynamic>(geoJSON);
 
-                dynamic result = JsonConvert.DeserializeObject<dynamic>(geoJSON);
-                dynamic latitude = (string)result.features[0].geometry.coordinates[1];
-                dynamic longitude = (string)result.features[0].geometry.coordinates[0];
+
+                    if (result.features.Count != 0)
+                    {
+                        latitude = (string)result.features[0].geometry.coordinates[1];
+                        longitude = (string)result.features[0].geometry.coordinates[0];
+                    }
+                    else
+                    {
+                        latitude = "";
+                        longitude = "";
+                    }
+                }
+                catch (Exception e)
+                {
+
+                    Console.WriteLine(e);
+                }
 
                 Dictionary<string, string> postalCodeGeoCoordinates = new Dictionary<string, string>
             {
@@ -36,22 +55,14 @@ namespace W5_Projectwork
 
                 return postalCodeGeoCoordinates;
             }
-
             else
             {
-
-                return new Dictionary<string, string>
-            {
-                { "lat", "0"},
-                { "lon", "0"}
-                };
+                throw new ArgumentException("Invalid postalcode format");
             }
-
-
         }
 
 
-        public static bool IsValidPostalCode(string postalCode)
+        public static bool IsValidPostalCodeFormat(string postalCode)
         {
             if (IsDigitsOnly(postalCode) && postalCode.Length == 5)
             {

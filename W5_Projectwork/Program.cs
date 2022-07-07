@@ -113,7 +113,7 @@ namespace W5_Projectwork
                 bool correctInputLoop = true;
                 while (correctInputLoop)
                 {
-                    
+                    Console.Clear();
                     Console.WriteLine("Mitä haluat tehdä?\n");
                     Console.WriteLine("1) Hae paikkoja");
                     Console.WriteLine("2) Hae tapahtumia");
@@ -152,10 +152,8 @@ namespace W5_Projectwork
                 public static async Task menuEvents()
                 {
                     //Events
-                    
-                    string postalcode = GetPostalcode();
 
-                    Dictionary<string, string> postalcodeCoordinates = await GeoCoordinatesUtil.GetGeoCoordinatesAsync(postalcode);
+                    Dictionary<string, string> postalcodeCoordinates = await GetPostalcodeCoordinatesAsync();
                     int searchRange = 5;
 
 
@@ -163,8 +161,10 @@ namespace W5_Projectwork
                     EventTags.Add("1", $"v1/events/?tags_search=Musiikki&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
                     EventTags.Add("2", $"v1/events/?tags_filter=Nuorille&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
                     EventTags.Add("3", $"v1/events/?tags_filter=shows&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
-                    
-                    Console.WriteLine("\nMillaisia tapahtumia haluat etsiä:");
+
+                    Console.WriteLine(EventTags["1"]);
+
+                    Console.WriteLine("Millaisia tapahtumia haluat etsiä:");
                     Console.WriteLine("1) Musiikkitapahtumat");
                     Console.WriteLine("2) Nuorten tapahtumat");
                     Console.WriteLine("3) Showt");
@@ -210,20 +210,37 @@ namespace W5_Projectwork
                 }
 
                 //Sampsa
-                public static string GetPostalcode()
+                public static async Task<Dictionary<string, string>> GetPostalcodeCoordinatesAsync()
                 {
+                    bool validPostalCodeInputted = false;
+                    Dictionary<string, string> postalcodeCoordinates = new Dictionary<string, string>();
+
                     Console.Clear();
-                    Console.WriteLine("Syötä postinumero");
-                    string userInputtedPostalcode = Console.ReadLine();
-                    while (!GeoCoordinatesUtil.IsValidPostalCode(userInputtedPostalcode)) 
+                    Console.WriteLine("Syötä postinumero:");
+                    
+
+                    while (!validPostalCodeInputted)
                     {
-                        Console.WriteLine("Syötä validi postikoodi");
-                        userInputtedPostalcode = Console.ReadLine();
+                        string userInputtedPostalcode = Console.ReadLine();
+
+                        if (GeoCoordinatesUtil.IsValidPostalCodeFormat(userInputtedPostalcode))
+                        {
+                            postalcodeCoordinates = await GeoCoordinatesUtil.GetGeoCoordinatesAsync(userInputtedPostalcode);
+                            if (!String.IsNullOrEmpty(postalcodeCoordinates["lat"]))
+                            {
+                                validPostalCodeInputted = true;
+                                
+                            }
+                        }
+                        if (!validPostalCodeInputted)
+                        {
+                        Console.WriteLine("Syötä olemassaoleva postinumero:");
+                        }
                     }
-                    return userInputtedPostalcode;
+                    return postalcodeCoordinates;
                 }
 
-                
+
 
                 //Ilari
                 public static List<HelsinkiEvent> AskADate(List<HelsinkiEvent> events)
@@ -260,7 +277,7 @@ namespace W5_Projectwork
                         {
                             Console.WriteLine("try again");
 
-                           
+
                         }
                     }
 
@@ -279,7 +296,7 @@ namespace W5_Projectwork
                     Console.WriteLine("1) juuri haetulle päivälle");
                     Console.WriteLine("2) haetusta päivästä 3kk eteenpäin");
 
-                    string switchinput ="3";
+                    string switchinput ="";
                     while (switchinput != "1" && switchinput!= "2")
                     {
                         switchinput = Console.ReadLine();
@@ -290,8 +307,12 @@ namespace W5_Projectwork
 
                                 foreach (var item in events) //collection= list muuttuja joka tulee choose a tag metodista
                                 {
-                                    if (item.eventDates.startingDay >= input && input >= item.eventDates.endingDay)
+                                    if (item.eventDates.endingDay >= input && input.AddDays(1) >= item.eventDates.startingDay)
                                         FilteredList.Add(item);
+<<<<<<< HEAD
+=======
+                                    
+>>>>>>> ac0133857cbc0f492891876cc02cb6d28e1949e9
                                     
 
                                 }
@@ -362,7 +383,7 @@ namespace W5_Projectwork
                             while (Console.ReadKey().Key != ConsoleKey.Enter) { };
                             Console.Clear();
                         }
-                    
+
                     }
 
 
