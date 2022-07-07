@@ -295,7 +295,7 @@ namespace W5_Projectwork
                     Console.WriteLine("1) juuri haetulle päivälle");
                     Console.WriteLine("2) haetusta päivästä 3kk eteenpäin");
 
-                    string switchinput ="3";
+                    string switchinput ="";
                     while (switchinput != "1" && switchinput!= "2")
                     {
                         switchinput = Console.ReadLine();
@@ -306,11 +306,8 @@ namespace W5_Projectwork
 
                                 foreach (var item in events) //collection= list muuttuja joka tulee choose a tag metodista
                                 {
-                                    if (item.eventDates.startingDay >= input && input >= item.eventDates.endingDay)
+                                    if (item.eventDates.endingDay >= input && input.AddDays(1) >= item.eventDates.startingDay)
                                         FilteredList.Add(item);
-                                    else if (input == null)
-                                        Console.WriteLine("Ei tapahtumia");
-                                    
                                 }
 
                                 break;
@@ -325,11 +322,9 @@ namespace W5_Projectwork
                                     
                                 }
                                 FilteredList.Sort((date1, date2) => DateTime.Compare(date1.eventDates.startingDay, date2.eventDates.startingDay));
-                                
-                             
+
                                 break;
-                                
-                            
+
                             default:
                                 Console.WriteLine("Virheellinen valinta");
                                
@@ -338,20 +333,28 @@ namespace W5_Projectwork
 
 
                     }
+
                     return FilteredList;
 
 
                 }
 
-
-
-
-
-
+                public static void CheckListEmpty(List<HelsinkiEvent> listOfEvents) // Roonsa tekemä metodi
+                {
+                    if (listOfEvents.Count == 0)
+                    {
+                       Console.WriteLine("Tapahtumia ei löytynyt. Paina enter palataksesi menuun \n");
+                        Console.ReadLine();
+                        Console.Clear();
+                    }
+                   
+                }
 
                 public static void PrintEvent(List<HelsinkiEvent> listOfEvents) //Roosan tekemä
                 {
+                    
                     Console.Clear();
+                    CheckListEmpty(listOfEvents);
                     int consoleWindowHeight = Console.WindowHeight;
                     foreach (var item in listOfEvents)
                     {
