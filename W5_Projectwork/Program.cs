@@ -292,9 +292,8 @@ namespace W5_Projectwork
                                 {
                                     if (item.eventDates.startingDay >= input && input >= item.eventDates.endingDay)
                                         FilteredList.Add(item);
-                                    else if (input == null)
-                                        Console.WriteLine("Ei tapahtumia");
                                     
+
                                 }
 
                                 break;
@@ -309,11 +308,9 @@ namespace W5_Projectwork
                                     
                                 }
                                 FilteredList.Sort((date1, date2) => DateTime.Compare(date1.eventDates.startingDay, date2.eventDates.startingDay));
-                                
-                             
+
                                 break;
-                                
-                            
+
                             default:
                                 Console.WriteLine("Virheellinen valinta");
                                
@@ -322,24 +319,28 @@ namespace W5_Projectwork
 
 
                     }
-<<<<<<< HEAD
 
-=======
->>>>>>> 4928228e9f0f7cb0cffc2dc5e220083e8af9077b
                     return FilteredList;
 
 
                 }
 
-
-
-
-
-
+                public static void CheckListEmpty(List<HelsinkiEvent> listOfEvents) // Roonsa tekemä metodi
+                {
+                    if (listOfEvents.Count == 0)
+                    {
+                       Console.WriteLine("Tapahtumia ei löytynyt. Paina enter palataksesi menuun \n");
+                        Console.ReadLine();
+                        Console.Clear();
+                    }
+                   
+                }
 
                 public static void PrintEvent(List<HelsinkiEvent> listOfEvents) //Roosan tekemä
                 {
+                    
                     Console.Clear();
+                    CheckListEmpty(listOfEvents);
                     int consoleWindowHeight = Console.WindowHeight;
                     foreach (var item in listOfEvents)
                     {
