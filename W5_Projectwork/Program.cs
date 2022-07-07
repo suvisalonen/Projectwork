@@ -161,8 +161,7 @@ namespace W5_Projectwork
                     EventTags.Add("1", $"v1/events/?tags_search=Musiikki&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
                     EventTags.Add("2", $"v1/events/?tags_filter=Nuorille&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
                     EventTags.Add("3", $"v1/events/?tags_filter=shows&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
-
-                    Console.WriteLine(EventTags["1"]);
+                    
 
                     Console.WriteLine("Millaisia tapahtumia haluat etsiä:");
                     Console.WriteLine("1) Musiikkitapahtumat");
@@ -286,7 +285,7 @@ namespace W5_Projectwork
 
                 }
 
-
+                //Ilari
                 //käydään lista läpi ja haetaan päivämäärän mukaiset tapahtumat uuteen listaan
                 public static List<HelsinkiEvent> DateFilterList(List<HelsinkiEvent> events, DateTime input)
                 {
@@ -303,9 +302,9 @@ namespace W5_Projectwork
                         switch (switchinput)
                         {
 
-                            case "1":
+                            case "1": //Ilari
 
-                                foreach (var item in events) //collection= list muuttuja joka tulee choose a tag metodista
+                                foreach (var item in events) 
                                 {
                                     if (item.eventDates.endingDay >= input && input.AddDays(1) >= item.eventDates.startingDay)
                                         FilteredList.Add(item);
@@ -314,12 +313,11 @@ namespace W5_Projectwork
                                 break;
 
                             case "2":
-                                foreach (var item in events) //collection= list muuttuja joka tulee choose a tag metodista
+                                foreach (var item in events) //Sampsa
                                 {
                                     if (item.eventDates.startingDay >= input && input.AddDays(90) >= item.eventDates.startingDay)
                                         FilteredList.Add(item);
-                                    else if (input == null)
-                                        Console.WriteLine("Ei tapahtumia");
+                                    
                                     
                                 }
                                 FilteredList.Sort((date1, date2) => DateTime.Compare(date1.eventDates.startingDay, date2.eventDates.startingDay));
