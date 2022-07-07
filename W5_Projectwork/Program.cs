@@ -87,10 +87,10 @@ namespace W5_Projectwork
                 {
 
                     Console.WriteLine("");
-                    Console.WriteLine(item.name.fi);
-                    Console.WriteLine("Osoite: \n {0}", item.location.address.street_address);
-                    Console.WriteLine("Paikan kuvaus: \n {0}", item.description.intro);
-                    Console.WriteLine("Tapahtuman sivut: \n {0}", item.info_url);
+                    Console.WriteLine("---- " + item.name.fi + " ----\n");
+                    Console.WriteLine("Paikan kuvaus: \n {0} \n", item.description.intro);
+                    Console.WriteLine("Osoite: \n {0} \n", item.location.address.street_address);                
+                    Console.WriteLine("Tapahtuman sivut: \n {0}\n ", item.info_url);
                     Console.WriteLine("--------------------------------------------------");
 
                     if (Console.CursorTop + 5 > consoleWindowHeight)
@@ -297,10 +297,10 @@ namespace W5_Projectwork
                             endingDateText = "->";
                         }
                         Console.WriteLine("");
-                        Console.WriteLine(item.name.fi);
-                        Console.WriteLine("Osoite: \n {0}", item.location.address.streetAddress);
-                        Console.WriteLine("Aikataulu: \n {0} - {1}", item.eventDates.startingDay, endingDateText);
-                        Console.WriteLine("Tapahtuman sivut: \n {0}", item.infoUrl);
+                        Console.WriteLine("---- " + item.name.fi + " ----\n");
+                        Console.WriteLine("Osoite: \n {0} \n", item.location.address.streetAddress);
+                        Console.WriteLine("Aikataulu: \n {0} - {1} \n", item.eventDates.startingDay, endingDateText);
+                        Console.WriteLine("Tapahtuman sivut: \n {0} \n", item.infoUrl);
                         Console.WriteLine("--------------------------------------------------");
 
                         if (Console.CursorTop + 5 > consoleWindowHeight)
