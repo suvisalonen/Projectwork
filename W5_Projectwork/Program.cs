@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using W5_Projectwork_Places;
 using System.Linq;
 
-
 namespace W5_Projectwork
 {
     class Program
@@ -17,10 +16,6 @@ namespace W5_Projectwork
             Console.WriteLine("Valitse 1 jos haluat hakea paikkoja, 2 jos haluat hakea tapahtumia");
 
             await Input.menuSelectionLogic();
-
-
-
-
 
         }
 
@@ -56,7 +51,8 @@ namespace W5_Projectwork
 
                     if (EventTags.ContainsKey(tagInput))
                     {
-                        await SearchWithTag(tagInput, EventTags);
+                        var answer = await SearchWithTag(tagInput, EventTags);
+                        PrintPlace(answer);
                         correctKeyLoop = false;
 
                     }
@@ -82,17 +78,16 @@ namespace W5_Projectwork
                 return placesList;
 
             }
-            public static void print(List<HelsinkiEvent> listOfEvents) //Roosan tekemä
+            public static void PrintPlace(List<Place> placesList) //Roosan tekemä
             {
-                foreach (var item in listOfEvents)
+                foreach (var item in placesList)
                 {
-                    Console.WriteLine(item.name.fi);
-                    Console.WriteLine("Osoite: \n {0}", item.location);
-                    Console.WriteLine("Aikataulu: \n {0}", item.eventDates);
-                    Console.WriteLine("Tapahtuman sivut: \n {0}", item.infoUrl);
+                    Console.WriteLine("\n" + item.name.fi);
+                    Console.WriteLine("Paikan kuvaus: \n {0}", item.description.intro);
+                    Console.WriteLine("Osoite: \n {0}", item.location.address.street_address);
+                    Console.WriteLine("Paikan sivut: \n {0} \n", item.info_url);
+               
                 }
-
-
             }
 
         }
@@ -137,11 +132,19 @@ namespace W5_Projectwork
                 public static async Task menuEvents()
                 {
                     //Events
-                    Dictionary<string, string> EventTags = new Dictionary<string, string>();
-                    EventTags.Add("1", "v1/events/?tags_search=Musiikki");
-                    EventTags.Add("2", "v1/events/?tags_filter=Nuorille");
-                    EventTags.Add("3", "v1/events/?tags_filter=shows");
+                    
+                    string postalcode = GetPostalcode();
 
+                    Dictionary<string, string> postalcodeCoordinates = await GeoCoordinatesUtil.GetGeoCoordinatesAsync(postalcode);
+                    int searchRange = 5;
+
+
+                    Dictionary<string, string> EventTags = new Dictionary<string, string>();
+                    EventTags.Add("1", $"v1/events/?tags_search=Musiikki&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
+                    EventTags.Add("2", $"v1/events/?tags_filter=Nuorille&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
+                    EventTags.Add("3", $"v1/events/?tags_filter=shows&distance_filter={postalcodeCoordinates["lat"]}%2C{postalcodeCoordinates["lon"]}%2C{searchRange}");
+
+                    Console.WriteLine(EventTags["1"]);
 
                     Console.WriteLine("Millaisia tapahtumia haluat etsiä:");
                     Console.WriteLine("1) Musiikkitapahtumat");
@@ -157,7 +160,8 @@ namespace W5_Projectwork
 
                         if (EventTags.ContainsKey(tagInput))
                         {
-                            AskADate(await SearchWithTag(tagInput, EventTags));
+                            var answer = AskADate(await SearchWithTag(tagInput, EventTags));
+                            PrintEvent(answer);
                             correctKeyLoop = false;
 
                         }
@@ -186,15 +190,31 @@ namespace W5_Projectwork
 
                 }
 
+                //Sampsa
+                public static string GetPostalcode()
+                {
+                    Console.Clear();
+                    Console.WriteLine("Syötä postinumero");
+                    string userInputtedPostalcode = Console.ReadLine();
+                    while (!GeoCoordinatesUtil.IsValidPostalCode(userInputtedPostalcode)) 
+                    {
+                        Console.WriteLine("Syötä validi postikoodi");
+                        userInputtedPostalcode = Console.ReadLine();
+                    }
+                    return userInputtedPostalcode;
+                }
+
+                
+
                 //Ilari
-                public static async Task AskADate(List<HelsinkiEvent> events)
+                public static List<HelsinkiEvent> AskADate(List<HelsinkiEvent> events)
                 {
 
 
 
                     //kysy päivämäärää tai printtaa päivän mukaan
                     //
-                    Console.WriteLine("Syötä haluamasi päivämäärä: ");
+                    Console.WriteLine("Syötä haluamasi päivämäärä (jätä tyhjäksi jos haluat hakea tapahtumia tänään): ");
 
 
                     bool ParseSucces = false;
@@ -202,21 +222,30 @@ namespace W5_Projectwork
                     {
                         string userInput = Console.ReadLine();
                         ParseSucces = DateTime.TryParse(userInput, out DateTime input);
+                        if (userInput == "")
+                        {
+                            ParseSucces = true;
+                            input = DateTime.Today;
+                        }
                         if (ParseSucces)
                         {
-                            foreach (var item in DateFilterList(events, input))
-                            {
-                                Console.WriteLine(item);
-                            }
+                            //foreach (var item in DateFilterList(events, input))
+                            //{
+                            //    Console.WriteLine(item);
+                            //}
 
-                            DateFilterList(events, input);
+                            return DateFilterList(events, input);
 
                         }
                         else
                         {
                             Console.WriteLine("try again");
+
+                           
                         }
                     }
+
+                    return new List<HelsinkiEvent>();
 
 
                 }
@@ -243,23 +272,36 @@ namespace W5_Projectwork
 
 
 
-                public static void print(List<HelsinkiEvent> listOfEvents) //Roosan tekemä
+                public static void PrintEvent(List<HelsinkiEvent> listOfEvents) //Roosan tekemä
                 {
+                    Console.Clear();
+                    int consoleWindowHeight = Console.WindowHeight;
                     foreach (var item in listOfEvents)
                     {
+                        string endingDateText = item.eventDates.endingDay.ToString();
+                        if (item.eventDates.endingDay == default(DateTime))
+                        {
+                            endingDateText = "->";
+                        }
+                        Console.WriteLine("");
                         Console.WriteLine(item.name.fi);
-                        Console.WriteLine("Osoite: \n {0}", item.location);
-                        Console.WriteLine("Aikataulu: \n {0}", item.eventDates);
+                        Console.WriteLine("Osoite: \n {0}", item.location.address.streetAddress);
+                        Console.WriteLine("Aikataulu: \n {0} - {1}", item.eventDates.startingDay, endingDateText);
                         Console.WriteLine("Tapahtuman sivut: \n {0}", item.infoUrl);
+                        Console.WriteLine("--------------------------------------------------");
+
+                        if (Console.CursorTop + 5 > consoleWindowHeight)
+                        {
+                            Console.Write("Seuraavalle sivulle enterillä");
+                            while (Console.ReadKey().Key != ConsoleKey.Enter) { };
+                            Console.Clear();
+                        }
+                    
                     }
 
 
                 }
             }
-
-
-
-
         }
     }
 }

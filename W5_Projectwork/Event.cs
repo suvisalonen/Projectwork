@@ -10,8 +10,11 @@ namespace W5_Projectwork
         public string id { get; set; }
         public Name name { get; set; }
         public Sourcetype sourceType { get; set; }
+        [JsonProperty(PropertyName = "info_url")]
         public string infoUrl { get; set; }
         public DateTime modifiedAt { get; set; }
+
+        [JsonProperty(PropertyName = "location")]
         public Location location { get; set; }
         public Description description { get; set; }
         public Tag[] tags { get; set; }
@@ -35,12 +38,14 @@ namespace W5_Projectwork
     {
         public double lat { get; set; }
         public double lon { get; set; }
+        [JsonProperty(PropertyName = "address")]
         public Address address { get; set; }
     }
 
 
     public class Address
     {
+        [JsonProperty(PropertyName = "street_address")]
         public string streetAddress { get; set; }
         public string postalCode { get; set; }
         public string locality { get; set; }
