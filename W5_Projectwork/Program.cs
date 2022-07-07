@@ -340,7 +340,7 @@ namespace W5_Projectwork
 
                 }
 
-                public static void CheckListEmpty(List<HelsinkiEvent> listOfEvents) // Roonsa tekemä metodi
+                public static void CheckListEmpty(List<HelsinkiEvent> listOfEvents) // Roosan tekemä metodi
                 {
                     if (listOfEvents.Count == 0)
                     {
